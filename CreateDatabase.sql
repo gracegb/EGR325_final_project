@@ -1,5 +1,5 @@
 CREATE DATABASE Restaurant;
-
+USE Restaurant;
 CREATE TABLE Customer (
 	CustomerID INT NOT NULL auto_increment,
     CustomerName varchar(100) NOT NULL,
