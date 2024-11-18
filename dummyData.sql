@@ -1,7 +1,14 @@
 --Restaurant Data
-INSERT INTO Restaurant (
-	(1, 'Seaside Teppanyaki', '3525 Riverside Plaza Dr Ste 200 Riverside, CA 92506', '(248) 434-5508', '11:30 AM - 7:00 PM')
+INSERT INTO Restaurant (RestaurantID, Name, Location, PhoneNumber, OpeningHours) VALUES
+	(1, 'Seaside Teppanyaki', '3525 Riverside Plaza Dr Ste 200 Riverside, CA 92506', '(248) 434-5508', '11:30 AM - 9:30 PM');
 
+INSERT INTO Menu (MenuID, RestaurantID, Name, Description, StartTime, EndTime) VALUES
+	(1, 1, 'Main', 'Menu of all the main entrees, appetizers, and non-alcoholic drinks', 11:30, 21:30)
+	(2, 1, 'Dessert', 'Menu with only dessert items', 11:30, 21:30)
+	(3, 1, 'Drink', 'Menu of alcoholic beverages', 11:30, 21:30)
+	(4, 1, 'Happy Hour', 'Menu available for only a specific time period that offers customers better prices', 11:30, 21:30)
+	(5, 1, 'Kids', 'Menu Items for kids under the age of 12 with smaller portions and cheaper prices', 11:30, 21:30);
+	
 -- Customer dummy data
 INSERT INTO Customer (CustomerID, CustomerName, CustomerEmail, PhoneNumber, Address) VALUES
 	(4, 'John Smith', 'johnsmith@gmail.com', '1234567890', '123 Mag Ave, Riverside, CA'),
