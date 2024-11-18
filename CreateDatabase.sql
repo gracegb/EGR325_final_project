@@ -92,11 +92,22 @@ CREATE TABLE Reservation (
     ReservationID INT NOT NULL AUTO_INCREMENT,
     CustomerID INT NOT NULL,
     ReservationDate DATETIME NOT NULL,
-    NumberOfPeople INT NOT NULL,
+    PartySize INT NOT NULL,
     Status ENUM('Pending', 'Confirmed', 'Cancelled', 'Waitlisted') DEFAULT 'Pending',
     SpecialRequests TEXT,
     PRIMARY KEY (ReservationID),
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE CASCADE
+);
+
+CREATE TABLE RestaurantTableReservation ( --Creates a list of reservations at a given table (Teppan tables can have multiple parties/reservations)
+	ReservationID
+	TableID
+)
+
+CREATE TABLE RestaurantTable (
+	TableID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	Type VARCHAR(50),
+	Seats SMALLINT(10)	
 );
 
 -- Create the Waitlist table
