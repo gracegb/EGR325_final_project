@@ -37,8 +37,8 @@ CREATE TABLE MenuItem (
     FOREIGN KEY (MenuID) REFERENCES Menu(MenuID)
 );
 
-CREATE TABLE Ingredient (
-    IngredientID INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE InventoryItem (
+    InventoryItemID INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(255) NOT NULL,    -- e.g., 'Flour', 'Sugar'
     Unit VARCHAR(50),              -- e.g., 'kg', 'liters'
     SupplierID INT NOT NULL,
@@ -68,10 +68,9 @@ CREATE TABLE SupplierIngredientCatalog (
 	UnitPrice DECIMAL(5,2) NOT NULL
 );
 
-CREATE TABLE MenuItemIngredient (
-    MenuItemIngredientID INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Ingredient (
     MenuItemID INT NOT NULL,
-    IngredientID INT NOT NULL,
+    InventoryItemID INT NOT NULL,
     QuantityRequired DECIMAL(10, 2) NOT NULL, -- Quantity needed for the menu item
     FOREIGN KEY (MenuItemID) REFERENCES MenuItem(MenuItemID),
     FOREIGN KEY (IngredientID) REFERENCES Ingredient(IngredientID)
