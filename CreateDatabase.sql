@@ -10,6 +10,69 @@ DROP TABLE IF EXISTS Waitlist;
 DROP TABLE IF EXISTS Reservation;
 DROP TABLE IF EXISTS Customer;
 
+-- Restaurant Information
+CREATE TABLE Restaurant (
+    RestaurantID INT PRIMARY KEY DEFAULT 1,
+    Name VARCHAR(255) NOT NULL,
+    Location VARCHAR(255),
+    PhoneNumber VARCHAR(15),
+    OpeningHours VARCHAR(100)
+);
+
+CREATE TABLE Menu (
+    MenuID INT AUTO_INCREMENT PRIMARY KEY,
+    RestaurantID INT DEFAULT 1,
+    Name VARCHAR(255) NOT NULL,    -- e.g., 'Happy Hour', 'Dessert'
+    Description TEXT,
+    StartTime TIME NOT NULL,       -- Start time for menu availability
+    EndTime TIME NOT NULL,         -- End time for menu availability
+    IsActive BOOLEAN DEFAULT FALSE, -- Automatically updated
+    FOREIGN KEY (RestaurantID) REFERENCES Restaurant(RestaurantID)
+);
+
+CREATE TABLE MenuItem (
+    MenuItemID INT AUTO_INCREMENT PRIMARY KEY,
+    MenuID INT NOT NULL,
+    Name VARCHAR(255) NOT NULL,    -- e.g., 'Chocolate Lava Cake'
+    Description TEXT,
+    Price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (MenuID) REFERENCES Menu(MenuID)
+);
+
+CREATE TABLE Ingredient (
+    IngredientID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,    -- e.g., 'Flour', 'Sugar'
+    Unit VARCHAR(50),              -- e.g., 'kg', 'liters'
+    SupplierID INT NOT NULL,
+    FOREIGN KEY (SupplierID) REFERENCES Supplier(SupplierID)
+);
+
+CREATE TABLE Inventory (
+    InventoryID INT AUTO_INCREMENT PRIMARY KEY,
+    IngredientID INT NOT NULL,
+    Quantity DECIMAL(10, 2) NOT NULL,
+    LastUpdated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (IngredientID) REFERENCES Ingredient(IngredientID)
+);
+
+CREATE TABLE Supplier (
+    SupplierID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,    -- e.g., 'Fresh Farm Supplies'
+    ContactName VARCHAR(255),
+    PhoneNumber VARCHAR(15),
+    Email VARCHAR(255),
+    Address VARCHAR(255)
+);
+
+CREATE TABLE MenuItemIngredient (
+    MenuItemIngredientID INT AUTO_INCREMENT PRIMARY KEY,
+    MenuItemID INT NOT NULL,
+    IngredientID INT NOT NULL,
+    QuantityRequired DECIMAL(10, 2) NOT NULL, -- Quantity needed for the menu item
+    FOREIGN KEY (MenuItemID) REFERENCES MenuItem(MenuItemID),
+    FOREIGN KEY (IngredientID) REFERENCES Ingredient(IngredientID)
+);
+
 -- Customers
 CREATE TABLE Customer (
 	CustomerID INT NOT NULL AUTO_INCREMENT,
