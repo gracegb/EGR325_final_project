@@ -16,7 +16,9 @@ CREATE TABLE Restaurant (
     Name VARCHAR(255) NOT NULL,
     Location VARCHAR(255),
     PhoneNumber VARCHAR(15),
-    OpeningHours VARCHAR(100)
+    OpeningHours VARCHAR(100),
+    BaseCapacity INT NOT NULL,
+    OverbookingPercentage DECIMAL(5, 2) NOT NULL
 );
 
 CREATE TABLE Menu (
