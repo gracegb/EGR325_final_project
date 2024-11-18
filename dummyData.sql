@@ -1,6 +1,6 @@
 --Restaurant Data
-
-
+INSERT INTO Restaurant (
+	(1, 'Seaside Teppanyaki', '3525 Riverside Plaza Dr Ste 200 Riverside, CA 92506', '(248) 434-5508', '11:30 AM - 7:00 PM')
 
 -- Customer dummy data
 INSERT INTO Customer (CustomerID, CustomerName, CustomerEmail, PhoneNumber, Address) VALUES
