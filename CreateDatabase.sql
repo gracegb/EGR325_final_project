@@ -151,17 +151,17 @@ BEGIN
     DECLARE overbooking_percentage DECIMAL(5, 2);
     DECLARE overbooking_limit INT;
     DECLARE current_reservations INT;
-
+--get base capacity from restaurant info table
     SELECT BaseCapacity, OverbookingPercentage INTO base_capacity, overbooking_percentage
     FROM Restaurant
     WHERE RestaurantID = 1;  
-
+--calc overbooking limit
     SET overbooking_limit = base_capacity * (1 + (overbooking_percentage / 100));
-
+--get current people (MODIFY)
     SELECT COUNT(*) INTO current_reservations
     FROM Reservation
     WHERE DATE(ReservationDate) = DATE(p_ReservationDate);
-
+--check if next reservation is within limit
     IF current_reservations < overbooking_limit THEN
         INSERT INTO Reservation (CustomerID, ReservationDate, NumberOfPeople, Status, SpecialRequests)
         VALUES (p_CustomerID, p_ReservationDate, p_NumberOfPeople, 'Confirmed', p_SpecialRequests);
@@ -170,5 +170,4 @@ BEGIN
         VALUES (p_CustomerID, p_ReservationDate, p_NumberOfPeople, 'Waitlisted', p_SpecialRequests);
     END IF;
 END $$
-
 DELIMITER ;
