@@ -1,6 +1,10 @@
 CREATE DATABASE IF NOT EXISTS Restaurant;
 USE Restaurant;
 
+-- base capacity/overbooking threshold (20% overbooking)
+SET @base_capacity = 100;
+SET @overbooking_limit = @base_capacity * 1.2;
+
 -- Make a clean slate for testing/working with the data :)
 DROP TABLE IF EXISTS Waitlist;
 DROP TABLE IF EXISTS Reservation;
@@ -37,7 +41,7 @@ INSERT INTO Customer (CustomerID, CustomerName, CustomerEmail, PhoneNumber, Addr
 -- Reservation dummy data
 INSERT INTO Reservation (CustomerID, ReservationDate, NumberOfPeople, Status, SpecialRequests) VALUES
 	(4, '2024-11-15 18:30:00', 3, 'Confirmed', 'N/A'),
-    (6, '2024-11-15 15:00:00', 8, 'Cancelled', 'wheelchair accessible'),
+    	(6, '2024-11-15 15:00:00', 8, 'Cancelled', 'wheelchair accessible'),
 	(8, '2024-11-16 19:00:00', 2, 'Confirmed', 'birthday');
 
 -- Create the Waitlist table
