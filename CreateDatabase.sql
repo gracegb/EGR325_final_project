@@ -131,9 +131,3 @@ BEGIN
     VALUES (reservationId);
 END$$
 DELIMITER ;
-
--- Waitlist dummy data
-INSERT INTO Waitlist(ReservationID, Position, DateAdded) VALUES
-    (1, 1, '2024-11-16 12:00:00'),
-    (2, 2, '2024-11-16 12:30:00'),
-    (3, 3, '2024-11-16 13:00:00');
