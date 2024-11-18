@@ -13,3 +13,9 @@ INSERT INTO Reservation (CustomerID, ReservationDate, NumberOfPeople, Status, Sp
 	(4, '2024-11-15 18:30:00', 3, 'Confirmed', 'N/A'),
     	(6, '2024-11-15 15:00:00', 8, 'Cancelled', 'wheelchair accessible'),
 	(8, '2024-11-16 19:00:00', 2, 'Confirmed', 'birthday');
+
+-- Waitlist dummy data
+INSERT INTO Waitlist(ReservationID, Position, DateAdded) VALUES
+    (1, 1, '2024-11-16 12:00:00'),
+    (2, 2, '2024-11-16 12:30:00'),
+    (3, 3, '2024-11-16 13:00:00');
