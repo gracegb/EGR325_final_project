@@ -66,6 +66,12 @@ CREATE TABLE Supplier (
     Address VARCHAR(255)
 );
 
+CREATE TABLE SupplierIngredientCatalog (
+	SupplierID INT NOT NULL,
+	IngredientID INT NOT NULL,
+	UnitPrice DECIMAL(5,2) NOT NULL
+);
+
 CREATE TABLE MenuItemIngredient (
     MenuItemIngredientID INT AUTO_INCREMENT PRIMARY KEY,
     MenuItemID INT NOT NULL,
