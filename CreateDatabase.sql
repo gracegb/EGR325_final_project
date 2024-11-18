@@ -100,8 +100,10 @@ CREATE TABLE Reservation (
 );
 
 CREATE TABLE RestaurantTableReservation ( --Creates a list of reservations at a given table (Teppan tables can have multiple parties/reservations)
-	ReservationID
-	TableID
+	ReservationID INT NOT NULL,
+	TableID INT NOT NULL,
+	FOREIGN KEY (ReservationID) REFERENCES Reservation(ReservationID),
+	FOREIGN KEY (TableID) REFERENCES RestaurantTable(TableID)
 )
 
 CREATE TABLE RestaurantTable (
