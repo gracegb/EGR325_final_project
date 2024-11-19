@@ -31,49 +31,45 @@ CREATE TABLE Menu (
 CREATE TABLE MenuItem (
     MenuItemID INT AUTO_INCREMENT PRIMARY KEY,
     MenuID INT NOT NULL,
-    Name VARCHAR(255) NOT NULL,    -- e.g., 'Chocolate Lava Cake'
-    Description TEXT,
+    ItemName VARCHAR(255) NOT NULL,    -- e.g., 'Chocolate Lava Cake'
     Price DECIMAL(10, 2) NOT NULL,
+    ItemDescription TEXT,
     FOREIGN KEY (MenuID) REFERENCES Menu(MenuID)
 );
 
-CREATE TABLE InventoryItem (
+CREATE TABLE InventoryItem ( --Assumptions: Only ONE INVENTORY
     InventoryItemID INT AUTO_INCREMENT PRIMARY KEY,
-    Name VARCHAR(255) NOT NULL,    -- e.g., 'Flour', 'Sugar'
-    Unit VARCHAR(50),              -- e.g., 'kg', 'liters'
+    ItemName VARCHAR(255) NOT NULL,    -- e.g., 'Flour', 'Sugar'
+    NumUnits INT,
+    QuantityPerUnit SMALLINT,
+    VolumeUnits VARCHAR(50), --  'liters' 'Cups' 'Gallons'
+    WeightUnits VARCHAR(50), -- 'lb', 'kg', ' 'oz'
     SupplierID INT NOT NULL,
     FOREIGN KEY (SupplierID) REFERENCES Supplier(SupplierID)
-);
-
-CREATE TABLE Inventory (
-    InventoryID INT AUTO_INCREMENT PRIMARY KEY,
-    IngredientID INT NOT NULL,
-    Quantity DECIMAL(10, 2) NOT NULL,
-    LastUpdated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (IngredientID) REFERENCES Ingredient(IngredientID)
-);
-
-CREATE TABLE Supplier (
-    SupplierID INT AUTO_INCREMENT PRIMARY KEY,
-    Name VARCHAR(255) NOT NULL,    -- e.g., 'Fresh Farm Supplies'
-    ContactName VARCHAR(255),
-    PhoneNumber VARCHAR(15),
-    Email VARCHAR(255),
-    Address VARCHAR(255)
-);
-
-CREATE TABLE SupplierIngredientCatalog (
-	SupplierID INT NOT NULL,
-	IngredientID INT NOT NULL,
-	UnitPrice DECIMAL(5,2) NOT NULL
 );
 
 CREATE TABLE Ingredient (
     MenuItemID INT NOT NULL,
     InventoryItemID INT NOT NULL,
-    QuantityRequired DECIMAL(10, 2) NOT NULL, -- Quantity needed for the menu item
+    Quantity DECIMAL(10, 2) NOT NULL, -- Quantity needed for the menu item
+    Units VARCHAR(50),
     FOREIGN KEY (MenuItemID) REFERENCES MenuItem(MenuItemID),
     FOREIGN KEY (IngredientID) REFERENCES Ingredient(IngredientID)
+);
+
+CREATE TABLE Supplier (
+    SupplierID INT AUTO_INCREMENT PRIMARY KEY,
+    SupplierName VARCHAR(255) NOT NULL,    -- e.g., 'Fresh Farm Supplies'
+    ContactName VARCHAR(255),
+    PhoneNumber VARCHAR(15),
+    Email VARCHAR(255),
+    SupplierAddress VARCHAR(255)
+);
+
+CREATE TABLE SupplierIngredientCatalog (
+	SupplierID INT NOT NULL,
+	InventoryItemID INT NOT NULL,
+	UnitPrice DECIMAL(5,2) NOT NULL
 );
 
 -- Customers
