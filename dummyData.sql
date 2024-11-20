@@ -65,62 +65,62 @@ INSERT INTO MenuItem (MenuID, ItemName, Price, ItemDescription) VALUES
 (7, 'Blue Lagoon', 10.50, 'des2'),
 (7, 'Beer', 11.50, 'des3'),
 (7, 'Sake Bomb', 11.50, 'des3'),
-(7, 'Rodney Strong', 11.50, 'Chardonnay or Cabernet'),
+(7, 'Rodney Strong', 11.50, 'Chardonnay or Cabernet');
 
 
 INSERT INTO InventoryItem (ItemName, NumUnits, QuantityPerUnit, Units) VALUES
 -- Meat and Seafood
-('Chicken Breast', 20, 4,'lb'),
-('Beef Sirloin', 20, 4,'lb'),
-('Shrimp', 20, 4,'lb'),
-('Salmon', 20, 4,'lb'),
-('Tuna', 20, 4,'lb'),
-('Crab', 20, 4,'lb'),
+('Chicken Breast', 20, 4, 'lb'),
+('Beef Sirloin', 20, 4, 'lb'),
+('Shrimp', 20, 4, 'lb'),
+('Salmon', 20, 4, 'lb'),
+('Tuna', 20, 4, 'lb'),
+('Crab', 20, 4, 'lb'),
 
 -- Vegetables
-('Cabbage', 20, 4,'lb'),
-('Carrots', 20, 4,'lb'),
-('Cucumber', 20, 4,'lb'),
-('Avocado', 20, 4,'lb'),
-('Mixed Greens', 20, 4,'lb'),
-('Radish Sprouts', 20, 4,'lb'),
+('Cabbage', 20, 4, 'lb'),
+('Carrots', 20, 4, 'lb'),
+('Cucumber', 20, 4, 'lb'),
+('Avocado', 20, 4, 'lb'),
+('Mixed Greens', 20, 4, 'lb'),
+('Radish Sprouts', 20, 4, 'lb'),
 
 -- Seasonings and Sauces
-('Soy Sauce', 50, 1,'bottle'),
-('Teriyaki Sauce', 30, 1,'bottle'),
-('Ponzu Sauce', 30, 1,'bottle'),
-('Miso Paste', 20, 1,'bottle'),
-('Tempura Batter Mix', 20, 4,'lb'),
+('Soy Sauce', 50, 1, 'bottle'),
+('Teriyaki Sauce', 30, 1, 'bottle'),
+('Ponzu Sauce', 30, 1, 'bottle'),
+('Miso Paste', 20, 1, 'bottle'),
+('Tempura Batter Mix', 20, 4, 'lb'),
 
 -- Other
-('Sushi Rice', 50, 4,'lb'),
-('Nori Seaweed', 100, 1,'pack'),
-('Egg Roll Wrappers', 50, 1,'pack'),
-('Gyoza Wrappers', 50, 1,'pack'),
-('Tofu', 20, 4,'lb'),
-('Garlic', 30, 1,'lb'),
-('Ginger', 30, 1,'lb'),
+('Sushi Rice', 50, 4, 'lb'),
+('Nori Seaweed', 100, 1, 'pack'),
+('Egg Roll Wrappers', 50, 1, 'pack'),
+('Gyoza Wrappers', 50, 1, 'pack'),
+('Tofu', 20, 4, 'lb'),
+('Garlic', 30, 1, 'lb'),
+('Ginger', 30, 1, 'lb'),
 
 -- Desserts
-('Mochi Ice Cream', 50, 1,'pack'),
-('Cheesecake Ingredients', 30, 1,'pack'),
-('Red Bean Paste', 20, 1,'lb'),
-('Buns', 40, 1,'pack'),
+('Mochi Ice Cream', 50, 1, 'pack'),
+('Cheesecake Ingredients', 30, 1, 'pack'),
+('Red Bean Paste', 20, 1, 'lb'),
+('Buns', 40, 1, 'pack'),
 
 -- Beverages
-('Soft Drinks & Iced Teas', 100, 1,'bottle'),
-('Strawberries', 30, 1,'lb'),
-('Lemonade', 50, 1,'bottle'),
+('Soft Drinks & Iced Teas', 100, 1, 'bottle'),
+('Strawberries', 30, 1, 'lb'),
+('Lemonade', 50, 1, 'bottle'),
 ('GingerAle', 50, 1,'bottle'),
 
 -- Alcohol
-('Rum', 20, 1,'bottle'),
-('Vodka', 20, 1,'bottle'),
+('Rum', 20, 1, 'bottle'),
+('Vodka', 20, 1, 'bottle'),
 ('Blue Curaçao', 20, 1,'bottle'),
-('Beer', 100, 1,'bottle'),
-('Sake', 50, 1,'bottle'),
-('Chardonnay', 30, 1,'bottle'),
-('Cabernet', 30, 1,'bottle');
+('Beer', 100, 1, 'bottle'),
+('Sake', 50, 1, 'bottle'),
+('Chardonnay', 30, 1, 'bottle'),
+('Cabernet', 30, 1, 'bottle');
 
 INSERT INTO Ingredient (MenuItemID, InventoryItemID, Quantity, Units) VALUES 
 -- Cajun Chicken Salad
