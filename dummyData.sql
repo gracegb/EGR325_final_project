@@ -12,11 +12,12 @@ INSERT INTO Menu (MenuID, RestaurantID, MenuName, MenuDescription, StartTime, En
     (5, 1, 'Kids', 'All Items come with a side of white or fried rice and miso soup. Must be under the age of 12','11:30', '21:30')
     (6, 1, 'Dessert', 'Menu with only dessert items', '11:30', '21:30'),
     (7, 1, 'Beverages', 'Menu of non-alcoholic beverages', '11:30', '21:30'),
-    (8, 1, 'Drink', 'Menu of alcoholic beverages', '11:30', '21:30'),
+    (8, 1, 'Drink', 'Menu of alcoholic beverages', '11:30', '21:30');
+
     
 -- Insert Menu Items for a sushi and teppanyaki place with MenuID reflecting different menu types
 
-INSERT INTO MenuItem (MenuID, ItemName, Price, ItemDescription) VALUES 
+INSERT INTO MenuItemDetails (MenuItemID, ItemName, Price, ItemDescription) VALUES 
 (1, 'Cajun Chicken Salad', 13.00, 'Steamed soybeans with garlic, salt, or pepper'),
 (1, 'Salmon Skin Salad', 16.00, 'Steamed soybeans with garlic, salt, or pepper'),
 (1, 'Seared Albacore Salad', 16.00, 'Steamed soybeans with garlic, salt, or pepper'),
