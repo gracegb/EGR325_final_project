@@ -28,7 +28,7 @@ CREATE TABLE Menu (
     FOREIGN KEY (RestaurantID) REFERENCES Restaurant(RestaurantID)
 );
 
-CREATE TABLE MenuItemList (
+CREATE TABLE MenuContent (
 	MenuID INT NOT NULL,
 	MenuItemID INT NOT NULL,
 	FOREIGN KEY (MenuID) REFERENCES Menu(MenuID),
