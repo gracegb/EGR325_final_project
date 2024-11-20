@@ -33,7 +33,6 @@ CREATE TABLE MenuContent (
 	MenuItemID INT NOT NULL,
 	FOREIGN KEY (MenuID) REFERENCES Menu(MenuID),
 	FOREIGN KEY (MenuItemID) REFERENCES MenuItem(MenuItemID)
-	
 )
 
 CREATE TABLE MenuItem (
@@ -49,8 +48,8 @@ CREATE TABLE InventoryItem ( --Assumptions: Only ONE INVENTORY
     ItemName VARCHAR(255) NOT NULL,    -- e.g., 'Flour', 'Sugar'
     NumUnits INT,
     QuantityPerUnit SMALLINT,
-    VolumeUnits VARCHAR(50), --  'liters' 'Cups' 'Gallons'
-    WeightUnits VARCHAR(50), -- 'lb', 'kg', ' 'oz'
+    Units VARCHAR(50), -- 'liters' 'Cups' 'Gallons,' 'lb', 'kg', ' 'oz'
+    ThresholdNumUnits INT,
     SupplierID INT NOT NULL,
     FOREIGN KEY (SupplierID) REFERENCES Supplier(SupplierID)
 );
