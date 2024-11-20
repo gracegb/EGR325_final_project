@@ -28,9 +28,16 @@ CREATE TABLE Menu (
     FOREIGN KEY (RestaurantID) REFERENCES Restaurant(RestaurantID)
 );
 
+CREATE TABLE MenuItemList (
+	MenuID INT NOT NULL,
+	MenuItemID INT NOT NULL,
+	FOREIGN KEY (MenuID) REFERENCES Menu(MenuID),
+	FOREIGN KEY (MenuItemID) REFERENCES MenuItem(MenuItemID)
+	
+)
+
 CREATE TABLE MenuItem (
     MenuItemID INT AUTO_INCREMENT PRIMARY KEY,
-    MenuID INT NOT NULL,
     ItemName VARCHAR(255) NOT NULL,    -- e.g., 'Chocolate Lava Cake'
     Price DECIMAL(10, 2) NOT NULL,
     ItemDescription TEXT,
