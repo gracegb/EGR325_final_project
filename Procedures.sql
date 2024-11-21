@@ -1,13 +1,15 @@
-------------------------
-----|--PROCEDURES--|----
-------------------------
---VIEW MENU
+-- ----------------------
+-- --|--PROCEDURES--|----
+-- ----------------------
+USE restaurant;
 
+-- VIEW MENU
+DELIMITER //
 CREATE PROCEDURE ViewMenu (
     IN p_MenuName VARCHAR(225)
 )
 BEGIN
-    DECLARE v_MenuID;
+    DECLARE v_MenuID INT;
     
     SELECT MenuID INTO v_MenuID
         FROM Menu
@@ -19,16 +21,16 @@ BEGIN
         ELSE
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Menu does not exist';
     END IF;
-END;
+END //
 
---View the Recipe of a given MenuItem
+-- View the Recipe of a given MenuItem
 CREATE PROCEDURE ViewRecipe (
-    IN p_MenuItemName
+    IN p_MenuItemName VARCHAR(255)
 )
 BEGIN
     DECLARE v_MenuItemID INT;
 
-    MenuItemID INTO v_MenuItemID 
+    SELECT MenuItemID INTO v_MenuItemID 
         FROM MenuItem
         WHERE MenuItemName = p_MenuItemName;
     
@@ -38,76 +40,71 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Menu item does not exist';
     END IF;
+END//
 
-END;
-
-------------------------USER STORY MODIFY & UPDATE THE MENU------------------------
---ADD A Menu
+-- ----------------------USER STORY MODIFY & UPDATE THE MENU------------------------
+-- ADD A Menu
 CREATE PROCEDURE AddMenu (
-    IN p_MenuName VARCHAR(225) NOT NULL,
+    IN p_MenuName VARCHAR(225),
     IN p_MenuDescription TEXT,
-    IN t_StartTime TIME NOT NULL,
-    IN t_EndTime TIME NOT NULL,
+    IN t_StartTime TIME,
+    IN t_EndTime TIME
 )
 BEGIN
     INSERT INTO Menu (MenuName, MenuDescription, StartTime, EndTime) VALUES
     (p_MenuName, p_MenuDescription, t_StartTime, t_EndTime);
-END;
+END//
 
---DELETE A MENU
+-- DELETE A MENU (with its menu content)
 CREATE PROCEDURE DeleteMenu (
-    IN p_MenuName VARCHAR(225) NOT NULL,
+    IN p_MenuName VARCHAR(225)
 )
 BEGIN
     DECLARE v_MenuID INT;
-    MenuID INTO v_MenuID FROM Menu
+    SELECT MenuID INTO v_MenuID FROM Menu
     WHERE MenuName = p_MenuName;
-
-    DELIMITER //
 
     START TRANSACTION;
         IF v_MenuID IS NOT NULL THEN
-            DELETE * FROM Menu, MenuContent
-            WHERE MenuID = v_MenuID
+            DELETE FROM Menu
+            WHERE MenuID = v_MenuID;
+            DELETE FROM MenuContent
+            WHERE MenuID = v_MenuID;
+            
+            COMMIT;
         ELSE
             -- Rollback if no Matches for MenuItem found
             ROLLBACK;
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Menu item does not exist';
         END IF;
-    END //
+END //
 
-DELIMITER ;
 
---DELETE a Menu Item from a Menu
+-- DELETE a Menu Item from a Menu
 CREATE PROCEDURE RemoveItemFromMenu (
     IN p_MenuName VARCHAR(225),
     IN p_MenuItemName VARCHAR(225)
 ) 
 BEGIN
     DECLARE v_MenuID INT;
-    MenuID INTO v_MenuID FROM MenuContent
-    WHERE MenuName = p_MenuName;
-
-    DECLARE v_MenuItemID From MenuItem
-    MenuItemID INTO v_MenuItemID FROM MenuContent
-    WHERE MenuItemName = p_MenuItemName;
-
-    DELIMITER //
+    DECLARE v_MenuItemID INT;
+    
+    SELECT MenuID, MenuItemID INTO v_MenuID, v_MenuItemID 
+    FROM MenuContent
+    WHERE MenuName = p_MenuName AND  MenuItemName = p_MenuItemName;
 
     START TRANSACTION;
         IF v_MenuID IS NOT NULL AND v_MenuItemID IS NOT NULL THEN
-            DELETE * FROM MenuContent
+            DELETE FROM MenuContent
             WHERE MenuID = v_MenuID AND MenuItemID = v_MenuItemID;
         ELSE
             -- Rollback if no Matches for MenuItem found
             ROLLBACK;
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Item is not in Menu and therefore cannot be deleted';
         END IF;
-    END //
-    DELIMITER;
-END;
+END //
 
---UPDATE Menu start time and end time 
+-- UPDATE Menu start time and end time 
 CREATE PROCEDURE UpdateMenuTimeWindow (
     IN p_MenuName VARCHAR(225),
     IN t_StartTime TIME,
@@ -115,26 +112,25 @@ CREATE PROCEDURE UpdateMenuTimeWindow (
 )
 BEGIN 
     DECLARE v_MenuID INT;
-    MenuID INTO v_MenuID FROM Menu
+    SELECT MenuID INTO v_MenuID FROM Menu
     WHERE MenuName = p_MenuName;
 
     IF v_MenuID IS NOT NULL THEN
         UPDATE Menu
-        SET StartTime = t_StartTime
-        AND SET EndTime = t_EndTime
+        SET StartTime = t_StartTime, EndTime = t_EndTime
         WHERE MenuID = v_MenuID;
     ELSE
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Menu item does not exist';
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Menu item does not exist';
     END IF;
-END;
+END //
 
-------------------------USER STORY MODIFY & UPDATE MENU ITEM------------------------
+-- ----------------------USER STORY MODIFY & UPDATE MENU ITEM------------------------
 
 -- ADD A MENU ITEM 
 CREATE PROCEDURE AddMenuItem (
-    IN p_MenuName VARCHAR(255) NOT NULL,
-    IN p_ItemName VARCHAR(255) NOT NULL,
-    IN p_Price DECIMAL(10,2) NOT NULL,
+    IN p_MenuName VARCHAR(255),
+    IN p_ItemName VARCHAR(255),
+    IN p_Price DECIMAL(10,2),
     IN p_ItemDescription TEXT
 )
 BEGIN
@@ -149,11 +145,9 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Menu does not exist';
         END IF;
-END;
+END//
 
---DELETE A MENU ITEM AND RECIPE WITH IT
-
-DELIMITER //
+-- DELETE A MENU ITEM AND RECIPE WITH IT
 
 CREATE PROCEDURE DeleteMenuItem (
     IN p_ItemName VARCHAR(225)
@@ -184,13 +178,11 @@ BEGIN
     END IF;
 END //
 
-DELIMITER ;
-
 -- Update the price of a specific menu item
 
 CREATE PROCEDURE UpdateMenuItemPrice(
     IN p_MenuItemName VARCHAR(225),
-    IN p_NewPrice VARCHAR(10,2)
+    IN p_NewPrice DECIMAL(10, 2)
 )
 BEGIN
     DECLARE v_MenuItemID INT;
@@ -204,12 +196,11 @@ BEGIN
     ELSE 
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Menu item does not exist';
     END IF;
-END;
+END //
 
-------------------------USER STORY MODIFY & UPDATE INGREDIENTS------------------------
+-- ----------------------USER STORY MODIFY & UPDATE INGREDIENTS------------------------
 
 -- Add Ingredient
-DELIMITER //
 CREATE PROCEDURE AddIngredient (
     IN p_MenuItemName VARCHAR(225),
     IN p_InventoryItemName VARCHAR(225),
@@ -230,16 +221,16 @@ BEGIN
         FROM InventoryItem
         WHERE InventoryItemName = p_InventoryItemName;
 
-    IF v_MenuItemID EXISTS AND v_InventoryItemID EXISTS THEN
+    IF v_MenuItemID IS NOT NULL AND v_InventoryItemID IS NOT NULL THEN
         INSERT INTO Ingredient (MenuItemID, InventoryItemID, Quantity, Units) VALUES
         (v_MenuItemID, v_InventoryItemID, p_Quantity, p_Units);
-    
-    ELSE IF v_MenuItemID EXISTS
+		COMMIT;
+    ELSEIF v_MenuItemID IS NOT NULL THEN
         -- Rollback if no Matches for MenuItem found
         ROLLBACK;
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ingredient is not an InventoryItem';
     
-    ELSE IF v_InventoryItemID EXISTS
+    ELSEIF v_InventoryItemID IS NOT NULL THEN
         -- Rollback if no Matches for MenuItem found
         ROLLBACK;
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Menu item does not exist';
@@ -250,13 +241,11 @@ BEGIN
     END IF;
 END //
 
-DELIMITER ;
-
 -- DELETE Ingredients 
-DELIMITER //
+
 CREATE PROCEDURE DeleteIngredient (
     IN p_MenuItemName VARCHAR(225),
-    IN p_InventoryItemName VARCHAR(225),
+    IN p_InventoryItemName VARCHAR(225)
 )
 BEGIN
     DECLARE v_MenuItemID INT; 
@@ -271,28 +260,28 @@ BEGIN
         FROM InventoryItem
         WHERE ItemName = p_InventoryItemName;
 
-    IF v_MenuItemID EXISTS AND v_InventoryItemID EXISTS THEN
-        DELETE * From Ingredient 
+    IF v_MenuItemID IS NOT NULL AND v_InventoryItemID IS NOT NULL THEN
+        DELETE FROM Ingredient 
         WHERE MenuItem = v_MenuItemID AND InventoryItemID = v_InventoryItemID;
-    ELSE IF v_MenuItemID EXISTS
+    
+    ELSEIF v_MenuItemID IS NOT NULL THEN
         -- Rollback if no Matches for MenuItem found
         ROLLBACK;
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid Ingredient: Not in Inventory';
     
-    ELSE IF v_InventoryItemID EXISTS
+    ELSEIF v_InventoryItemID IS NOT NULL THEN
         -- Rollback if no Matches for MenuItem found
         ROLLBACK;
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Menu item does not exist';
+        
     ELSE
         ROLLBACK;
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Menu item does not exist AND Ingredient is not an Inventory Item';
     END IF;
-    END //
-END;
+END //
 
 -- UPDATE Quantities AND Units 
-
-CREATE PROCEDURE AlterIngredientQuantityUnit (
+CREATE PROCEDURE UpdateIngredientQuantityUnit (
     IN p_MenuItemName VARCHAR(225),
     IN p_InventoryItemName VARCHAR(225),
     IN p_Quantity DECIMAL(10,2),
@@ -310,25 +299,25 @@ BEGIN
 
     IF v_MenuItemID IS NOT NULL AND v_InventoryItemID IS NOT NULL THEN
         UPDATE Ingredient
-        SET Quantity = p_Quantity AND Units = p_Units
+        SET Quantity = p_Quantity, Units = p_Units
         WHERE MenuItemID = v_MenuItemID AND InventoryItemID = v_InventoryItemID; 
     
     ELSE
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Menu item does not exist AND Ingredient is not an Inventory Item';
     END IF;
-END;
+END //
 
-------------------------USER STORY MODIFY & UPDATE Inventory------------------------
+-- ----------------------USER STORY MODIFY & UPDATE Inventory------------------------
 
---- INSERT Inventory Item ---
+-- INSERT Inventory Item --
 CREATE PROCEDURE AddInventoryItem (
-    IN p_ItemName VARCHAR(255) NOT NULL,
+    IN p_ItemName VARCHAR(255),
     IN p_NumUnits INT,
     IN p_QuantityPerUnit SMALLINT,
     IN p_Units VARCHAR(50),
     IN p_ThresholdNumUnits INT,
-    IN p_SupplierName INT NOT NULL,
-    IN p_UnitPrice DECIMAL(5,2) NOT NULL
+    IN p_SupplierName INT,
+    IN p_UnitPrice DECIMAL(5,2)
 )
 BEGIN
     DECLARE v_SupplierID INT;
@@ -345,18 +334,17 @@ BEGIN
         UPDATE SupplierInventoryItemCatalog
         SET UnitPrice = p_UnitPrice 
         WHERE SupplierID = v_SupplierID AND InventoryItemID = 
-        (SELECT InventoryItemID FROM InventoryItem WHERE ItemName = p_ItemName AND QuantityPerUnit = p_QuantityPerUnit AND Units = p_Units)
+        (SELECT InventoryItemID FROM InventoryItem WHERE ItemName = p_ItemName AND QuantityPerUnit = p_QuantityPerUnit AND Units = p_Units);
 
     ELSE
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'SupplierID is not a Valid ID';
     END IF;
-END;
+END //
 
---- DELETE Inventory Item ---
-DELIMITER //
+-- - DELETE Inventory Item ---
 CREATE PROCEDURE DeleteInventoryItem (
-    IN p_InventoryItemName VARCHAR(255) NOT NULL,
-    IN p_QuantityPerUnit SMALLINT NOT NULL,
+    IN p_InventoryItemName VARCHAR(255),
+    IN p_QuantityPerUnit SMALLINT,
     IN p_Units VARCHAR(50),
     IN p_SupplierName VARCHAR(255)
 )
@@ -364,33 +352,31 @@ BEGIN
     DECLARE v_SupplierID INT;
     DECLARE v_InventoryItemID INT;
 
-    BEGIN TRANSACTION
-        SELECT SupplierID INTO v_SupplierID FROM Supplier WHERE SupplierName = p_SupplierName
+    START TRANSACTION;
+        SELECT SupplierID INTO v_SupplierID FROM Supplier WHERE SupplierName = p_SupplierName;
         
         SELECT InventoryItemID INTO v_InventoryItemID 
             FROM InventoryItem WHERE SupplierID = v_SupplierID AND InventoryItemName = p_InventoryItemName 
             AND QuantityPerUnit = p_QuantityPerUnit AND Units = p_Units;
         
-        IF v_SupplierID IS NOT NULL AND v_InventoryItemID IS NOT NULL
-            DELETE * FROM InventoryItem 
+        IF v_SupplierID IS NOT NULL AND v_InventoryItemID IS NOT NULL THEN
+            DELETE FROM InventoryItem 
             WHERE InventoryItemID = v_InventoryItemID;
 
-            DELETE * FROM Ingredient WHERE  InventoryItemID = v_InventoryItemID;
+            DELETE FROM Ingredient WHERE  InventoryItemID = v_InventoryItemID;
         ELSE
             Rollback;
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Input does not match any records in InventoryItem';
-    END IF;
-    END //
-END;
-DELIMITER ;
+		END IF;
+END //
 
 -- UPDATE Quantities of each InventoryItem
 
 CREATE PROCEDURE UpdateInventoryItemQuantity (
-    IN p_InventoryItemName VARCHAR(255) NOT NULL,
+    IN p_InventoryItemName VARCHAR(255),
     IN p_QuantityPerUnit SMALLINT,
     IN p_Units VARCHAR(50),
-    IN p_NewNumUnits INT --NEW Value
+    IN p_NewNumUnits INT 
 )
 BEGIN
     DECLARE v_InventoryItemID INT;
@@ -405,52 +391,51 @@ BEGIN
     ELSE
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No matching InventoryItem records were found';
     END IF;
-END;
+END //
 
-------------------------USER STORY MODIFY & UPDATE Supplier Info------------------------
+-- ----------------------USER STORY MODIFY & UPDATE Supplier Info------------------------
 
---INSERT SUPPLIER
+-- INSERT SUPPLIER
 CREATE PROCEDURE AddSupplier (
-    IN p_SupplierName VARCHAR(255) NOT NULL,
-    IN p_ContactName VARCHAR(255) NOT NULL,
-    IN p_PhoneNumber VARCHAR(15) NOT NULL,
-    IN p_Email VARCHAR(255) NOT NULL,
-    IN p_SupplierAddress VARCHAR(255) NOT NULL
+    IN p_SupplierName VARCHAR(255),
+    IN p_ContactName VARCHAR(255),
+    IN p_PhoneNumber VARCHAR(15),
+    IN p_Email VARCHAR(255),
+    IN p_SupplierAddress VARCHAR(255)
 )
 BEGIN
 
 INSERT INTO Supplier (SupplierName, ContactName, PhoneNumber, Email, SupplierAddress) VALUES
 (p_SupplierName, p_ContactName, p_PhoneNumber, p_Email, p_SupplierAddress);
 
-END;
+END //
 
---DELETE SUPPLIER
-DELIMITER //
+-- DELETE SUPPLIER
 CREATE PROCEDURE DeleteSupplier (
-    IN p_SupplierName VARCHAR(255) NOT NULL,
+    IN p_SupplierName VARCHAR(255)
 )
 BEGIN
     DECLARE v_SupplierID INT;
     
-    START TRANSACTION
+    START TRANSACTION;
         SELECT SupplierID INTO v_SupplierID FROM Supplier
         WHERE SupplierName = p_SupplierName;
         
         IF v_SupplierID IS NOT NULL THEN
-            DELETE * FROM Supplier 
-            WHERE SupplierID = v_SupplierID
+            DELETE FROM Supplier 
+            WHERE SupplierID = v_SupplierID;
+            COMMIT;
         ELSE
-            Rollback
+            ROLLBACK;
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No matching Supplier records were found';
         END IF;
-    END //
-END;
+END //
 
 
 -- UPDATE SUPPLIER - ContactName, PhoneNumber, Email, SupplierAddress 
 CREATE PROCEDURE UpdateSupplierInformation (
-    IN p_SupplierName VARCHAR(255) NOT NULL,
-    IN New_ContactName VARCHAR(255) NOT NULL,
+    IN p_SupplierName VARCHAR(255),
+    IN New_ContactName VARCHAR(255),
     IN New_PhoneNumber VARCHAR(15),
     IN New_Email VARCHAR(255),
     IN New_SupplierAdress VARCHAR(255)
@@ -464,14 +449,15 @@ BEGIN
         IF v_SupplierID IS NOT NULL THEN
             UPDATE Supplier
             SET ContactName = New_ContactName AND PhoneNumber = New_PhoneNumber
-            AND Email = New_Email, AND SupplierAddress = New_SupplierAdress;
+            AND Email = New_Email, SupplierAddress = New_SupplierAdress;
         ELSE
             SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No matching Supplier records were found';
         END IF;
-END;
+END //
 
+DELIMITER ;
 
---checking if reservation is overbooked
+-- checking if reservation is overbooked
 
 DELIMITER $$
 
