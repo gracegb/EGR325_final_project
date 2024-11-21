@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS Customer;
 -- Restaurant Information
 CREATE TABLE Restaurant (
     RestaurantID INT PRIMARY KEY DEFAULT 1,
-    Name VARCHAR(255) NOT NULL,
+    MenuName VARCHAR(255) NOT NULL,
     Location VARCHAR(255),
     PhoneNumber VARCHAR(15),
     OpeningHours VARCHAR(100),
@@ -20,7 +20,7 @@ CREATE TABLE Restaurant (
 CREATE TABLE Menu (
     MenuID INT AUTO_INCREMENT PRIMARY KEY,
     RestaurantID INT DEFAULT 1,
-    Name VARCHAR(255) NOT NULL,    -- e.g., 'Happy Hour', 'Dessert'
+    MenuName VARCHAR(255) NOT NULL,    -- e.g., 'Happy Hour', 'Dessert'
     Description TEXT,
     StartTime TIME NOT NULL,       -- Start time for menu availability
     EndTime TIME NOT NULL,         -- End time for menu availability
@@ -37,7 +37,7 @@ CREATE TABLE MenuContent (
 
 CREATE TABLE MenuItem (
     MenuItemID INT AUTO_INCREMENT PRIMARY KEY,
-    ItemName VARCHAR(255) NOT NULL,    -- e.g., 'Chocolate Lava Cake'
+    MenuItemName VARCHAR(255) NOT NULL,    -- e.g., 'Chocolate Lava Cake'
     Price DECIMAL(10, 2) NOT NULL,
     ItemDescription TEXT,
     FOREIGN KEY (MenuID) REFERENCES Menu(MenuID)
@@ -45,7 +45,7 @@ CREATE TABLE MenuItem (
 
 CREATE TABLE InventoryItem ( --Assumptions: Only ONE INVENTORY
     InventoryItemID INT AUTO_INCREMENT PRIMARY KEY,
-    ItemName VARCHAR(255) NOT NULL,    -- e.g., 'Flour', 'Sugar'
+    InventoryItemName VARCHAR(255) NOT NULL,    -- e.g., 'Flour', 'Sugar'
     NumUnits INT,
     QuantityPerUnit SMALLINT,
     Units VARCHAR(50), -- 'liters' 'Cups' 'Gallons,' 'lb', 'kg', ' 'oz'
