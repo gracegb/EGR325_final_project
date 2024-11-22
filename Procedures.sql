@@ -51,8 +51,8 @@ CREATE PROCEDURE AddMenu (
     IN t_EndTime TIME
 )
 BEGIN
-    INSERT INTO Menu (MenuName, MenuDescription, StartTime, EndTime) VALUES
-    (p_MenuName, p_MenuDescription, t_StartTime, t_EndTime);
+    INSERT INTO Menu (RestaurantID, MenuName, MenuDescription, StartTime, EndTime) VALUES
+    (1, p_MenuName, p_MenuDescription, t_StartTime, t_EndTime);
 END//
 
 -- DELETE A MENU (with its menu content)
