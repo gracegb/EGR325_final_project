@@ -17,7 +17,7 @@ INSERT INTO Menu (RestaurantID, MenuName, MenuDescription, StartTime, EndTime) V
     
 -- Insert Menu Items for a sushi and teppanyaki place with MenuID reflecting different menu types
 
-INSERT INTO MenuItemDetails (MenuItemID, ItemName, Price, ItemDescription) VALUES 
+INSERT INTO MenuItem (MenuItemID, ItemName, Price, ItemDescription) VALUES 
 (1, 'Cajun Chicken Salad', 13.00, 'Steamed soybeans with garlic, salt, or pepper'),
 (1, 'Salmon Skin Salad', 16.00, 'Steamed soybeans with garlic, salt, or pepper'),
 (1, 'Seared Albacore Salad', 16.00, 'Steamed soybeans with garlic, salt, or pepper'),
