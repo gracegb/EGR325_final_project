@@ -4,15 +4,15 @@ INSERT INTO Restaurant (RestaurantID, Name, Location, PhoneNumber, OpeningHours)
 	(1, 'Seaside Teppanyaki', '3525 Riverside Plaza Dr Ste 200 Riverside, CA 92506', '(248) 434-5508', '11:30 AM - 9:30 PM');
 
 -- INSERT DIFFERENT MENUS
-INSERT INTO Menu (MenuID, RestaurantID, MenuName, MenuDescription, StartTime, EndTime) VALUES
-    (1, 1, 'Main', 'Menu of all the main entrees, appetizers, and non-alcoholic drinks', '11:30', '21:30'),
-    (2, 1, 'Teppan', 'Menu of all the Teppan Items', '11:30', '21:30'),
-    (3, 1, 'Sushi and Sahimi', 'All Suhsi entrees', '11:30', '21:30');
-    (4, 1, 'Happy Hour', 'Menu available for only a specific time period that offers customers better prices for selected items', '19:30', '20:30'),
-    (5, 1, 'Kids', 'All Items come with a side of white or fried rice and miso soup. Must be under the age of 12','11:30', '21:30')
-    (6, 1, 'Dessert', 'Menu with only dessert items', '11:30', '21:30'),
-    (7, 1, 'Beverages', 'Menu of non-alcoholic beverages', '11:30', '21:30'),
-    (8, 1, 'Drink', 'Menu of alcoholic beverages', '11:30', '21:30');
+INSERT INTO Menu (RestaurantID, MenuName, MenuDescription, StartTime, EndTime) VALUES
+    (1, 'Main', 'Menu of all the main entrees, appetizers, and non-alcoholic drinks', '11:30', '21:30'),
+    (1, 'Teppan', 'Menu of all the Teppan Items', '11:30', '21:30'),
+    (1, 'Sushi and Sahimi', 'All Suhsi entrees', '11:30', '21:30'),
+    (1, 'Happy Hour', 'Menu available for only a specific time period that offers customers better prices for selected items', '19:30', '20:30'),
+    (1, 'Kids', 'All Items come with a side of white or fried rice and miso soup. Must be under the age of 12','11:30', '21:30'),
+    (1, 'Dessert', 'Menu with only dessert items', '11:30', '21:30'),
+    (1, 'Beverages', 'Menu of non-alcoholic beverages', '11:30', '21:30'),
+    (1, 'Drink', 'Menu of alcoholic beverages', '11:30', '21:30');
 
     
 -- Insert Menu Items for a sushi and teppanyaki place with MenuID reflecting different menu types
