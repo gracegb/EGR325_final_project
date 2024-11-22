@@ -1,28 +1,22 @@
-DROP DATABASE restaurant;
 CREATE DATABASE IF NOT EXISTS restaurant;
 USE restaurant;
-
--- Make a clean slate for testing/working with the data :)
-DROP TABLE IF EXISTS Waitlist;
-DROP TABLE IF EXISTS Reservation;
-DROP TABLE IF EXISTS Customer;
 
 -- Restaurant Information
 CREATE TABLE Restaurant (
     RestaurantID INT PRIMARY KEY DEFAULT 1,
-    MenuName VARCHAR(255) NOT NULL,
+    RestaurantName VARCHAR(255) NOT NULL,
     Location VARCHAR(255),
     PhoneNumber VARCHAR(15),
     OpeningHours VARCHAR(100),
-    BaseCapacity INT NOT NULL,
-    OverbookingPercentage DECIMAL(5, 2) NOT NULL
+    BaseCapacity INT NOT NULL DEFAULT 100,
+    OverbookingPercentage DECIMAL(5, 2) NOT NULL DEFAULT 0.2
 );
 
 CREATE TABLE Menu (
     MenuID INT AUTO_INCREMENT PRIMARY KEY,
     RestaurantID INT DEFAULT 1,
     MenuName VARCHAR(255) NOT NULL,    -- e.g., 'Happy Hour', 'Dessert'
-    Description TEXT,
+    MenuDescription TEXT,
     StartTime TIME NOT NULL,       -- Start time for menu availability
     EndTime TIME NOT NULL,         -- End time for menu availability
     IsActive BOOLEAN DEFAULT FALSE, -- Automatically updated
@@ -122,6 +116,7 @@ CREATE TABLE Waitlist (
     PRIMARY KEY (WaitlistID),
     FOREIGN KEY (ReservationID) REFERENCES Reservation(ReservationID) ON DELETE CASCADE
 );
+
 
 --STORED PROCEDURES
 
