@@ -1,8 +1,4 @@
---DUMMY DATA
-
-INSERT INTO Restaurant (RestaurantID, Name, Location, PhoneNumber, OpeningHours) VALUES
-	(1, 'Seaside Teppanyaki', '3525 Riverside Plaza Dr Ste 200 Riverside, CA 92506', '(248) 434-5508', '11:30 AM - 9:30 PM');
-
+USE restaurant;
 -- INSERT DIFFERENT MENUS
 INSERT INTO Menu (RestaurantID, MenuName, MenuDescription, StartTime, EndTime) VALUES
     (1, 'Main', 'Menu of all the main entrees, appetizers, and non-alcoholic drinks', '11:30', '21:30'),
@@ -14,271 +10,45 @@ INSERT INTO Menu (RestaurantID, MenuName, MenuDescription, StartTime, EndTime) V
     (1, 'Beverages', 'Menu of non-alcoholic beverages', '11:30', '21:30'),
     (1, 'Drink', 'Menu of alcoholic beverages', '11:30', '21:30');
 
-    
--- Insert Menu Items for a sushi and teppanyaki place with MenuID reflecting different menu types
+INSERT INTO MenuItem (MenuItemName, Price, ItemDescription) VALUES 
+('Cajun Chicken Salad', 13.00, 'Steamed soybeans with garlic, salt, or pepper'),
+('Salmon Skin Salad', 16.00, 'Steamed soybeans with garlic, salt, or pepper'),
+('Seared Albacore Salad', 16.00, 'Steamed soybeans with garlic, salt, or pepper'),
+('Cucumber Salad', 7.00, 'Steamed soybeans with garlic, salt, or pepper'),
+('Eggrolls', 4.50, 'Traditional Japanese soup with tofu, seaweed, and scallions'),
+('Miso Soup', 4.50, 'Traditional Japanese soup with tofu, seaweed, and scallions'),
+('Edamame', 8.00, 'Steamed soybeans with garlic, salt, or pepper'),
+('Shrimp Tempura', 13.99, 'Lightly battered and fried shrimp with tempura sauce'),
+('Vegetable Gyoza', 7.50, 'Pan-fried vegetable dumplings served with soy sauce'),
+('Miso Soup', 4.50, 'Traditional Japanese soup with tofu, seaweed, and scallions'),
+('Chicken Teppanyaki', 15.99, 'Grilled chicken with mixed vegetables and special sauce'),
+('Beef Teppanyaki', 17.99, 'Teppanyaki grilled beef with fried rice and vegetables'),
+('Sunset Roll', 12.99, 'A delicious sushi roll with fresh salmon and avocado'),
+('California Roll', 10.00, 'A classic sushi roll with crab, avocado, and cucumber'),
+('Spicy Tuna Roll', 11.50, 'Sushi roll with spicy tuna, cucumber, and tobiko'),
+('Salmon Sashimi', 14.00, 'Fresh slices of salmon served with soy sauce and wasabi'),
+('Miso Glazed Black Cod', 9.99, 'Grilled black cod with a sweet miso glaze served with pickled vegetables'),
+('Teriyaki Chicken Skewers', 7.50, 'Grilled chicken skewers in a savory teriyaki sauce'),
+('Vegetable Tempura', 6.00, 'Crispy battered seasonal vegetables served with dipping sauce'),
+('Shrimp Dumplings', 8.50, 'Steamed shrimp dumplings served with soy sauce and sesame oil'),
+('Beef Teppan', 10.50, 'Tender beef marinated in soy sauce and garlic, grilled to perfection'),
+('Chicken Cutlet', 12.99, ''),
+('Teriyaki Chicken', 10.00, ''),
+('Beef Teriyaki', 11.50, ''),
+('Mochi Ice Cream', 5.00, 'Selection of chocolate, mango, strawberry, or green tea flavors'),
+('Cheesecake', 6.50, ''),
+('Tempura Ice Cream', 7.00, 'Green tea ice cream with tempura with red beans and drizzled with chocolate sauce.'),
+('Red Bean Paste Bun', 4.00, 'Steamed bun filled with sweet red bean paste'),
+('Soft Drinks & Iced Teas', 4.00, 'Coke, Sprite, Diet Coke, Root Beer, Lemonade Orange Soda, Iced Tea, Iced Green Tea'),
+('Strawberry Lemonade', 5.30, 'Fresh strawberry lemonade served chilled'),
+('Ginger Ale', 4.00, 'Refreshing ginger-flavored soft drink'),
+('Ginger Mojito', 12.99, 'Refreshing mojito with ginger infusion'),
+('Blue Lagoon', 10.50, 'Bright blue cocktail with vodka and blue curaçao'),
+('Beer', 11.50, 'Choice of local or imported beer'),
+('Sake Bomb', 11.50, 'Sake served with a light beer'),
+('Rodney Strong', 11.50, 'Chardonnay or Cabernet');
 
-INSERT INTO MenuItem (MenuItemID, ItemName, Price, ItemDescription) VALUES 
-(1, 'Cajun Chicken Salad', 13.00, 'Steamed soybeans with garlic, salt, or pepper'),
-(1, 'Salmon Skin Salad', 16.00, 'Steamed soybeans with garlic, salt, or pepper'),
-(1, 'Seared Albacore Salad', 16.00, 'Steamed soybeans with garlic, salt, or pepper'),
-(1, 'Cucumber Salad', 7.00, 'Steamed soybeans with garlic, salt, or pepper'),
-
-(1, 'Eggrolls', 4.50, 'Traditional Japanese soup with tofu, seaweed, and scallions'),
-(1, 'Miso Soup', 4.50, 'Traditional Japanese soup with tofu, seaweed, and scallions'),
-(1, 'Edamame', 8.00, 'Steamed soybeans with garlic, salt, or pepper'),
-
-(1, 'Shrimp Tempura', 13.99, 'Lightly battered and fried shrimp with tempura sauce'),
-(1, 'Vegetable Gyoza', 7.50, 'Pan-fried vegetable dumplings served with soy sauce');
-(1, 'Miso Soup', 4.50, 'Traditional Japanese soup with tofu, seaweed, and scallions'),
-
---TEPPAN ITEMS
-(2, 'Chicken Teppanyaki', 15.99, 'Grilled chicken with mixed vegetables and special sauce'),
-(2, 'Beef Teppanyaki', 17.99, 'Teppanyaki grilled beef with fried rice and vegetables'),
-
---SUSHI ITEMS
-(3, 'Sunset Roll', 12.99, 'A delicious sushi roll with fresh salmon and avocado'),
-(3, 'California Roll', 10.00, 'A classic sushi roll with crab, avocado, and cucumber'),
-(3, 'Spicy Tuna Roll', 11.50, 'Sushi roll with spicy tuna, cucumber, and tobiko'),
-(1, 'Salmon Sashimi', 14.00, 'Fresh slices of salmon served with soy sauce and wasabi'),
---HAPPY HOUR
-(4, 'item1', 12.99, 'des1'),
-(4, 'item2', 10.00, 'des2'),
-(4, 'item3', 11.50, 'des3'),
-
---KIDS ITEMS
-(5, 'Chicken Cutlet', 12.99, ''),
-(5, 'Teriyaki Chicken', 10.00, ''),
-(5, 'Beef Terriyaki', 11.50, ''),
-
---DESSERT ITEMS 
-(6, 'Mochi Ice Cream', 5.00, 'Selection of chocolate, mango, strawberry, or green tea flavors'),
-(6, 'Cheesecake', 6.50, ''),
-(6, 'Tempura Ice Cream', 7.00, 'Green tea ice cream with tempura with red beans and drizzled with chocolate sauce.'),
-(6, 'Red Bean Paste Bun', 4.00, 'Steamed bun filled with sweet red bean paste'),
-
---Beverage ITEMS
-(7, 'Soft Drinks & Iced Teas', 4.00, 'Coke, Sprite, Diet Coke, Root Beer, Lemonade Orange Soda, Iced Tea, Iced Green Tea'),
-(7, 'Strawberry Lemonade', 5.30, 'des2'),
-(7, 'GingerAle', 4.00, 'des3');
-
---Alcoholic Drink ITEMS
-(7, 'Ginger Mojito', 12.99, 'des1'),
-(7, 'Blue Lagoon', 10.50, 'des2'),
-(7, 'Beer', 11.50, 'des3'),
-(7, 'Sake Bomb', 11.50, 'des3'),
-(7, 'Rodney Strong', 11.50, 'Chardonnay or Cabernet');
-
-
-INSERT INTO InventoryItem (ItemName, NumUnits, QuantityPerUnit, Units) VALUES
--- Meat and Seafood
-('Chicken Breast', 20, 4, 'lb'),
-('Beef Sirloin', 20, 4, 'lb'),
-('Shrimp', 20, 4, 'lb'),
-('Salmon', 20, 4, 'lb'),
-('Tuna', 20, 4, 'lb'),
-('Crab', 20, 4, 'lb'),
-
--- Vegetables
-('Cabbage', 20, 4, 'lb'),
-('Carrots', 20, 4, 'lb'),
-('Cucumber', 20, 4, 'lb'),
-('Avocado', 20, 4, 'lb'),
-('Mixed Greens', 20, 4, 'lb'),
-('Radish Sprouts', 20, 4, 'lb'),
-
--- Seasonings and Sauces
-('Soy Sauce', 50, 1, 'bottle'),
-('Teriyaki Sauce', 30, 1, 'bottle'),
-('Ponzu Sauce', 30, 1, 'bottle'),
-('Miso Paste', 20, 1, 'bottle'),
-('Tempura Batter Mix', 20, 4, 'lb'),
-
--- Other
-('Sushi Rice', 50, 4, 'lb'),
-('Nori Seaweed', 100, 1, 'pack'),
-('Egg Roll Wrappers', 50, 1, 'pack'),
-('Gyoza Wrappers', 50, 1, 'pack'),
-('Tofu', 20, 4, 'lb'),
-('Garlic', 30, 1, 'lb'),
-('Ginger', 30, 1, 'lb'),
-
--- Desserts
-('Mochi Ice Cream', 50, 1, 'pack'),
-('Cheesecake Ingredients', 30, 1, 'pack'),
-('Red Bean Paste', 20, 1, 'lb'),
-('Buns', 40, 1, 'pack'),
-
--- Beverages
-('Soft Drinks & Iced Teas', 100, 1, 'bottle'),
-('Strawberries', 30, 1, 'lb'),
-('Lemonade', 50, 1, 'bottle'),
-('GingerAle', 50, 1,'bottle'),
-
--- Alcohol
-('Rum', 20, 1, 'bottle'),
-('Vodka', 20, 1, 'bottle'),
-('Blue Curaçao', 20, 1,'bottle'),
-('Beer', 100, 1, 'bottle'),
-('Sake', 50, 1, 'bottle'),
-('Chardonnay', 30, 1, 'bottle'),
-('Cabernet', 30, 1, 'bottle');
-
-INSERT INTO Ingredient (MenuItemID, InventoryItemID, Quantity, Units) VALUES 
--- Cajun Chicken Salad
-(1, 1, 0.5, 'lb'),  -- Chicken Breast
-(1, 2, 2, 'tsp'),  -- Cajun Seasoning
-(1, 3, 2, 'cup'),  -- Mixed Greens
-(1, 4, 0.5, 'cup'),  -- Cherry Tomatoes
-(1, 5, 0.25, 'cup'),  -- Red Onions
-(1, 6, 0.25, 'cup'),  -- Bell Peppers
-(1, 7, 3, 'tbsp'),  -- Ranch Dressing
-
--- Salmon Skin Salad
-(2, 8, 0.25, 'lb'),  -- Crispy Salmon Skin
-(2, 3, 2, 'cup'),  -- Mixed Greens
-(2, 9, 1, 'cup'),  -- Cucumber
-(2, 10, 0.25, 'cup'),  -- Radish Sprouts
-(2, 11, 3, 'tbsp'),  -- Ponzu Sauce
-
--- Seared Albacore Salad
-(3, 12, 0.5, 'lb'),  -- Albacore Tuna
-(3, 3, 2, 'cup'),  -- Mixed Greens
-(3, 13, 1, 'cup'),  -- Avocado
-(3, 14, 0.25, 'cup'),  -- Crispy Onions
-(3, 15, 3, 'tbsp'),  -- Soy Ginger Dressing
-
--- Cucumber Salad
-(4, 9, 1, 'cup'),  -- Cucumber
-(4, 16, 0.25, 'cup'),  -- Rice Vinegar
-(4, 17, 1, 'tbsp'),  -- Sugar
-(4, 18, 0.5, 'tsp'),  -- Salt
-(4, 19, 1, 'tbsp'),  -- Sesame Seeds
-
--- Eggrolls
-(5, 20, 10, 'pcs'),  -- Egg Roll Wrappers
-(5, 21, 0.5, 'lb'),  -- Ground Pork
-(5, 22, 1, 'cup'),  -- Cabbage
-(5, 4, 1, 'cup'),  -- Carrots
-(5, 23, 3, 'tbsp'),  -- Soy Sauce
-(5, 24, 1, 'tbsp'),  -- Garlic
-(5, 25, 1, 'tbsp'),  -- Ginger
-
--- Miso Soup
-(6, 26, 3, 'tbsp'),  -- Miso Paste
-(6, 27, 0.25, 'lb'),  -- Tofu
-(6, 28, 0.25, 'cup'),  -- Seaweed
-(6, 29, 2, 'tbsp'),  -- Scallions
-
--- Edamame
-(7, 30, 1, 'lb'),  -- Edamame
-(7, 24, 1, 'tbsp'),  -- Garlic
-(7, 18, 1, 'tsp'),  -- Salt
-(7, 31, 0.5, 'tsp'),  -- Pepper
-
--- Shrimp Tempura
-(8, 3, 0.5, 'lb'),  -- Shrimp
-(8, 32, 1, 'cup'),  -- Tempura Batter Mix
-(8, 33, 2, 'cup'),  -- Vegetable Oil
-(8, 34, 0.25, 'cup'),  -- Tempura Sauce
-
--- Vegetable Gyoza
-(9, 35, 10, 'pcs'),  -- Gyoza Wrappers
-(9, 22, 1, 'cup'),  -- Cabbage
-(9, 4, 1, 'cup'),  -- Carrots
-(9, 36, 0.5, 'cup'),  -- Mushrooms
-(9, 24, 1, 'tbsp'),  -- Garlic
-(9, 23, 3, 'tbsp'),  -- Soy Sauce
-
--- Chicken Teppanyaki
-(10, 1, 0.5, 'lb'),  -- Chicken Breast
-(10, 37, 1, 'cup'),  -- Mixed Vegetables
-(10, 23, 3, 'tbsp'),  -- Soy Sauce
-(10, 24, 1, 'tbsp'),  -- Garlic
-(10, 38, 3, 'tbsp'),  -- Teppanyaki Sauce
-
--- Beef Teppanyaki
-(11, 2, 0.5, 'lb'),  -- Beef Sirloin
-(11, 37, 1, 'cup'),  -- Mixed Vegetables
-(11, 23, 3, 'tbsp'),  -- Soy Sauce
-(11, 24, 1, 'tbsp'),  -- Garlic
-(11, 38, 3, 'tbsp'),  -- Teppanyaki Sauce
-
--- Sunset Roll
-(12, 3, 0.25, 'lb'),  -- Fresh Salmon
-(12, 13, 1, 'cup'),  -- Avocado
-(12, 39, 1, 'cup'),  -- Sushi Rice
-(12, 40, 1, 'sheet'),  -- Nori Seaweed
-
--- California Roll
-(13, 5, 0.25, 'lb'),  -- Crab
-(13, 13, 1, 'cup'),  -- Avocado
-(13, 9, 1, 'cup'),  -- Cucumber
-(13, 39, 1, 'cup'),  -- Sushi Rice
-(13, 40, 1, 'sheet'),  -- Nori Seaweed
-
--- Spicy Tuna Roll
-(14, 4, 0.25, 'lb'),  -- Tuna
-(14, 41, 2, 'tbsp'),  -- Spicy Mayo
-(14, 9, 1, 'cup'),  -- Cucumber
-(14, 39, 1, 'cup'),  -- Sushi Rice
-(14, 40, 1, 'sheet'),  -- Nori Seaweed
-
--- Salmon Sashimi
-(15, 3, 0.25, 'lb'),  -- Fresh Salmon
-
--- Chicken Cutlet (Kids)
-(16, 1, 0.5, 'lb'),  -- Chicken Breast
-(16, 42, 1, 'cup'),  -- Panko Breadcrumbs
-
--- Teriyaki Chicken (Kids)
-(17, 1, 0.5, 'lb'),  -- Chicken Breast
-(17, 23, 3, 'tbsp'),  -- Teriyaki Sauce
-
--- Beef Teriyaki (Kids)
-(18, 2, 0.5, 'lb'),  -- Beef Sirloin
-(18, 23, 3, 'tbsp');  -- Teriyaki Sauce
-
--- Mochi Ice Cream
-(19, 43, 1, 'pack'),  -- Mochi Ice Cream
-
--- Cheesecake
-(20, 44, 1, 'pack');  -- Cheesecake Ingredients
-
--- Tempura Ice Cream
-(21, 32, 1, 'cup'),  -- Tempura Batter
-(21, 45, 1, 'scoop'),  -- Green Tea Ice Cream
-(21, 46, 1, 'tbsp');  -- Red Bean Paste
-
--- Red Bean Paste Bun
-(22, 46, 1, 'tbsp'),  -- Red Bean Paste
-(22, 47, 1, 'bun');  -- Steamed Bun
-
--- Soft Drinks & Iced Teas
-(23, 48, 1, 'bottle');  -- Soft Drinks & Iced Teas
-
--- Strawberry Lemonade
-(24, 49, 1, 'cup'),  -- Lemonade
-(24, 50, 1, 'cup');  -- Strawberries
-
--- Ginger Ale
-(25, 51, 1, 'bottle');  -- Ginger Ale
-
--- Ginger Mojito
-(26, 52, 1, 'bottle'),  -- Rum
-(26, 24, 1, 'tbsp'),  -- Mint
-(26, 16, 1, 'tsp');  -- Lime Juice
-
--- Blue Lagoon
-(27, 53, 1, 'bottle'),  -- Vodka
-(27, 54, 1, 'bottle');  -- Blue Curaçao
-
--- Beer
-(28, 55, 1, 'bottle');  -- Beer
-
--- Sake Bomb
-(29, 56, 1, 'bottle'),  -- Sake
-
-INSERT INTO Suppliers (SupplierName, ContactName, PhoneNumber, EmailAddress, SupplierAddress) VALUES
+INSERT INTO Supplier (SupplierName, ContactName, PhoneNumber, Email, SupplierAddress) VALUES
 ('Fresh Farms Produce', 'John Doe', '(555) 123-4567', 'johndoe@freshfarms.com', '456 Greenway Lane, Riverside, CA 92506'),
 ('Seafood Fresh', 'Sarah Smith', '(555) 987-6543', 'sarah@seafoodfresh.com', '789 Ocean Drive, Riverside, CA 92506'),
 ('Quality Meats Co.', 'Mike Johnson', '(555) 543-2109', 'mike@qualitymeats.com', '321 Butcher St, Riverside, CA 92506'),
@@ -289,6 +59,61 @@ INSERT INTO Suppliers (SupplierName, ContactName, PhoneNumber, EmailAddress, Sup
 ('Vegetable Growers Inc.', 'Robert Green', '(555) 666-4444', 'robert@veginc.com', '890 Green Way, Riverside, CA 92506'),
 ('Italian Herb Co.', 'Catherine White', '(555) 112-2334', 'catherine@herbco.com', '345 Herb St, Riverside, CA 92506'),
 ('Dim Sum Imports', 'Henry Wang', '(555) 777-0001', 'henry@dimsumimports.com', '567 Dumpling Ave, Riverside, CA 92506');
+
+INSERT INTO InventoryItem (InventoryItemName, NumUnits, QuantityPerUnit, Units, ThresholdNumUnits, SupplierID) VALUES
+
+-- Meat and Seafood (assumed SupplierID for Quality Meats)
+('Chicken Breast', 20, 4, 'lb', 10, 3),
+('Beef Sirloin', 20, 4, 'lb', 15, 3),
+('Shrimp', 20, 4, 'lb', 5, 2),
+('Salmon', 20, 4, 'lb', 12, 2),
+('Tuna', 20, 4, 'lb', 8, 2),
+('Crab', 20, 4, 'lb', 6, 2),
+
+-- Vegetables (assumed SupplierID for Fresh Farms Produce)
+('Cabbage', 20, 4, 'lb', 10, 1),
+('Carrots', 20, 4, 'lb', 20, 1),
+('Cucumber', 20, 4, 'lb', 25, 1),
+('Avocado', 20, 4, 'lb', 18, 1),
+('Mixed Greens', 20, 4, 'lb', 15, 1),
+('Radish Sprouts', 20, 4, 'lb', 12, 1),
+
+-- Seasonings and Sauces (assumed SupplierID for Gourmet Spice Co.)
+('Soy Sauce', 50, 1, 'bottle', 30, 6),
+('Teriyaki Sauce', 30, 1, 'bottle', 25, 6),
+('Ponzu Sauce', 30, 1, 'bottle', 20, 6),
+('Miso Paste', 20, 1, 'bottle', 15, 6),
+('Tempura Batter Mix', 20, 4, 'lb', 10, 6),
+
+-- Other (assumed SupplierID for Sushi Essentials)
+('Sushi Rice', 50, 4, 'lb', 40, 4),
+('Nori Seaweed', 100, 1, 'pack', 50, 4),
+('Egg Roll Wrappers', 50, 1, 'pack', 4, 4),
+('Gyoza Wrappers', 50, 1, 'pack', 4, 4),
+('Tofu', 20, 4, 'lb', 30, 4),
+('Garlic', 30, 1, 'lb', 25, 4),
+('Ginger', 30, 1, 'lb', 25, 4),
+
+-- Desserts (assumed SupplierID for Organic Dairy Farms)
+('Mochi Ice Cream', 50, 1, 'pack', 15, 5),
+('Cheesecake Ingredients', 30, 1, 'pack', 10, 5),
+('Red Bean Paste', 20, 1, 'lb', 8, 4),
+('Buns', 40, 1, 'pack', 20, 4),
+
+-- Beverages (assumed SupplierID for Sea Harvest Suppliers)
+('Soft Drinks & Iced Teas', 100, 1, 'bottle', 50, 7),
+('Strawberries', 30, 1, 'lb', 20, 1),
+('Lemonade', 50, 1, 'bottle', 30, 7),
+('GingerAle', 50, 1,'bottle', 25, 7),
+
+-- Alcohol (assumed SupplierID for Sea Harvest Suppliers)
+('Rum', 20, 1, 'bottle', 10, 7),
+('Vodka', 20, 1, 'bottle', 10, 7),
+('Blue Curaçao', 20, 1,'bottle', 10, 7),
+('Beer', 100, 1, 'bottle', 50, 7),
+('Sake', 50, 1, 'bottle', 15, 7),
+('Chardonnay', 30, 1, 'bottle', 20, 7),
+('Cabernet', 30, 1, 'bottle', 20, 7);
 
 INSERT INTO SupplierIngredientCatalog (SupplierID, InventoryItemID, UnitPrice) VALUES
 
@@ -349,18 +174,18 @@ INSERT INTO SupplierIngredientCatalog (SupplierID, InventoryItemID, UnitPrice) V
 (8, 36, 1.50),  -- Mushrooms
 (8, 35, 0.20),  -- Gyoza Wrappers
 (8, 22, 0.75);  -- Cabbage
-	
+
 -- Customer dummy data
-INSERT INTO Customer (CustomerID, CustomerName, CustomerEmail, PhoneNumber, Address) VALUES
-	(4, 'John Smith', 'johnsmith@gmail.com', '1234567890', '123 Mag Ave, Riverside, CA'),
-	(6, 'Jane Doe', 'janedoe@gmail.com', '2345678901', '123 Mag Ave, Riverside, CA'),
-	(8, 'Ronald Ellis', 'rellis@gmail.com', '4567890123', '456 Mag Ave, Riverside, CA');
+INSERT INTO Customer (CustomerName, CustomerEmail, PhoneNumber, Address) VALUES
+	('John Smith', 'johnsmith@gmail.com', '1234567890', '123 Mag Ave, Riverside, CA'),
+	('Jane Doe', 'janedoe@gmail.com', '2345678901', '123 Mag Ave, Riverside, CA'),
+	('Ronald Ellis', 'rellis@gmail.com', '4567890123', '456 Mag Ave, Riverside, CA');
 
 -- Reservation dummy data
-INSERT INTO Reservation (CustomerID, ReservationDate, NumberOfPeople, Status, SpecialRequests) VALUES
-	(4, '2024-11-15 18:30:00', 3, 'Confirmed', 'N/A'),
-    	(6, '2024-11-15 15:00:00', 8, 'Cancelled', 'wheelchair accessible'),
-	(8, '2024-11-16 19:00:00', 2, 'Confirmed', 'birthday');
+INSERT INTO Reservation (CustomerID, ReservationDate, PartySize, Status, SpecialRequests) VALUES
+	(1,'2024-11-15 18:30:00', 3, 'Confirmed', 'N/A'),
+    	(2,'2024-11-15 15:00:00', 8, 'Cancelled', 'wheelchair accessible'),
+	(3,'2024-11-16 19:00:00', 2, 'Confirmed', 'birthday');
 
 -- Waitlist dummy data
 INSERT INTO Waitlist(ReservationID, Position, DateAdded) VALUES
