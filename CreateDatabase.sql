@@ -1,27 +1,22 @@
-CREATE DATABASE IF NOT EXISTS Restaurant;
-USE Restaurant;
-
--- Make a clean slate for testing/working with the data :)
-DROP TABLE IF EXISTS Waitlist;
-DROP TABLE IF EXISTS Reservation;
-DROP TABLE IF EXISTS Customer;
+CREATE DATABASE IF NOT EXISTS restaurant;
+USE restaurant;
 
 -- Restaurant Information
 CREATE TABLE Restaurant (
     RestaurantID INT PRIMARY KEY DEFAULT 1,
-    Name VARCHAR(255) NOT NULL,
+    RestaurantName VARCHAR(255) NOT NULL UNIQUE,
     Location VARCHAR(255),
     PhoneNumber VARCHAR(15),
     OpeningHours VARCHAR(100),
-    BaseCapacity INT NOT NULL,
-    OverbookingPercentage DECIMAL(5, 2) NOT NULL
+    BaseCapacity INT NOT NULL DEFAULT 100,
+    OverbookingPercentage DECIMAL(5, 2) NOT NULL DEFAULT 0.2
 );
 
 CREATE TABLE Menu (
     MenuID INT AUTO_INCREMENT PRIMARY KEY,
     RestaurantID INT DEFAULT 1,
-    Name VARCHAR(255) NOT NULL,    -- e.g., 'Happy Hour', 'Dessert'
-    Description TEXT,
+    MenuName VARCHAR(255) NOT NULL UNIQUE,    -- e.g., 'Happy Hour', 'Dessert'
+    MenuDescription TEXT,
     StartTime TIME NOT NULL,       -- Start time for menu availability
     EndTime TIME NOT NULL,         -- End time for menu availability
     IsActive BOOLEAN DEFAULT FALSE, -- Automatically updated
@@ -30,20 +25,34 @@ CREATE TABLE Menu (
 
 CREATE TABLE MenuItem (
     MenuItemID INT AUTO_INCREMENT PRIMARY KEY,
-    MenuID INT NOT NULL,
-    ItemName VARCHAR(255) NOT NULL,    -- e.g., 'Chocolate Lava Cake'
+    MenuItemName VARCHAR(255) NOT NULL,    -- e.g., 'Chocolate Lava Cake'
     Price DECIMAL(10, 2) NOT NULL,
-    ItemDescription TEXT,
-    FOREIGN KEY (MenuID) REFERENCES Menu(MenuID)
+    ItemDescription TEXT
 );
 
-CREATE TABLE InventoryItem ( # Assumptions: Only ONE INVENTORY
+CREATE TABLE MenuContent (
+	MenuID INT NOT NULL,
+	MenuItemID INT NOT NULL,
+	FOREIGN KEY (MenuID) REFERENCES Menu(MenuID),
+	FOREIGN KEY (MenuItemID) REFERENCES MenuItem(MenuItemID)
+);
+
+CREATE TABLE Supplier (
+    SupplierID INT AUTO_INCREMENT PRIMARY KEY,
+    SupplierName VARCHAR(255) NOT NULL,    -- e.g., 'Fresh Farm Supplies'
+    ContactName VARCHAR(255),
+    PhoneNumber VARCHAR(15),
+    Email VARCHAR(255),
+    SupplierAddress VARCHAR(255)
+);
+
+CREATE TABLE InventoryItem ( -- Assumptions: Only ONE INVENTORY
     InventoryItemID INT AUTO_INCREMENT PRIMARY KEY,
-    ItemName VARCHAR(255) NOT NULL,    -- e.g., 'Flour', 'Sugar'
+    InventoryItemName VARCHAR(255) NOT NULL,    -- e.g., 'Flour', 'Sugar'
     NumUnits INT,
     QuantityPerUnit SMALLINT,
-    VolumeUnits VARCHAR(50), --  'liters' 'Cups' 'Gallons'
-    WeightUnits VARCHAR(50), -- 'lb', 'kg', ' 'oz'
+    Units VARCHAR(50), -- 'liters' 'Cups' 'Gallons,' 'lb', 'kg', ' 'oz'
+    ThresholdNumUnits INT,
     SupplierID INT NOT NULL,
     FOREIGN KEY (SupplierID) REFERENCES Supplier(SupplierID)
 );
@@ -54,16 +63,7 @@ CREATE TABLE Ingredient (
     Quantity DECIMAL(10, 2) NOT NULL, -- Quantity needed for the menu item
     Units VARCHAR(50),
     FOREIGN KEY (MenuItemID) REFERENCES MenuItem(MenuItemID),
-    FOREIGN KEY (IngredientID) REFERENCES Ingredient(IngredientID)
-);
-
-CREATE TABLE Supplier (
-    SupplierID INT AUTO_INCREMENT PRIMARY KEY,
-    SupplierName VARCHAR(255) NOT NULL,    -- e.g., 'Fresh Farm Supplies'
-    ContactName VARCHAR(255),
-    PhoneNumber VARCHAR(15),
-    Email VARCHAR(255),
-    SupplierAddress VARCHAR(255)
+    FOREIGN KEY (InventoryItemID) REFERENCES InventoryItem(InventoryItemID)
 );
 
 CREATE TABLE SupplierIngredientCatalog (
@@ -94,18 +94,17 @@ CREATE TABLE Reservation (
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE CASCADE
 );
 
-# Creates a list of reservations at a given table (Teppan tables can have multiple parties/reservations)
-CREATE TABLE RestaurantTableReservation ( 
-	ReservationID INT NOT NULL,
-	TableID INT NOT NULL,
-	FOREIGN KEY (ReservationID) REFERENCES Reservation(ReservationID),
-	FOREIGN KEY (TableID) REFERENCES RestaurantTable(TableID)
-);
-
 CREATE TABLE RestaurantTable (
 	TableID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	Type VARCHAR(50),
 	Seats SMALLINT(10)	
+);
+
+CREATE TABLE RestaurantTableReservation ( -- Creates a list of reservations at a given table (Teppan tables can have multiple parties/reservations)
+	ReservationID INT NOT NULL,
+	TableID INT NOT NULL,
+	FOREIGN KEY (ReservationID) REFERENCES Reservation(ReservationID),
+	FOREIGN KEY (TableID) REFERENCES RestaurantTable(TableID)
 );
 
 -- Create the Waitlist table
@@ -118,7 +117,8 @@ CREATE TABLE Waitlist (
     FOREIGN KEY (ReservationID) REFERENCES Reservation(ReservationID) ON DELETE CASCADE
 );
 
-# STORED PROCEDURES
+
+--STORED PROCEDURES
 
 -- set pos in waitlist automatically
 DELIMITER $$
@@ -147,30 +147,30 @@ BEGIN
 END$$
 DELIMITER ;
 
-# checks if reservation list is overbooked
+--checks if reservation list is overbooked
 DELIMITER $$
 CREATE PROCEDURE InsertReservationWithOverbooking(
     IN p_CustomerID INT,
     IN p_ReservationDate DATETIME,
     IN p_NumberOfPeople INT,
     IN p_SpecialRequests TEXT
-) 
+)
 BEGIN
     DECLARE base_capacity INT;
     DECLARE overbooking_percentage DECIMAL(5, 2);
     DECLARE overbooking_limit INT;
     DECLARE current_reservations INT;
-# get base capacity from restaurant info table
+-- get base capacity from restaurant info table
     SELECT BaseCapacity, OverbookingPercentage INTO base_capacity, overbooking_percentage
     FROM Restaurant
     WHERE RestaurantID = 1;  
-# calc overbooking limit
+-- calc overbooking limit
     SET overbooking_limit = base_capacity * (1 + (overbooking_percentage / 100));
-# get current people (MODIFY)
+-- get current people (MODIFY)
     SELECT COUNT(*) INTO current_reservations
     FROM Reservation
     WHERE DATE(ReservationDate) = DATE(p_ReservationDate);
-# check if next reservation is within limit
+-- check if next reservation is within limit
     IF current_reservations < overbooking_limit THEN
         INSERT INTO Reservation (CustomerID, ReservationDate, NumberOfPeople, Status, SpecialRequests)
         VALUES (p_CustomerID, p_ReservationDate, p_NumberOfPeople, 'Confirmed', p_SpecialRequests);
