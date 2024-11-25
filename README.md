@@ -3,6 +3,6 @@ Student project for EGR325 Database Systems
 Created by:
 <ul>
   <li>Savannah Punak</li>
-  <li>Grace Berquist</li>
+  <li>Grace Bergquist</li>
   <li>Isabel Ramientos</li>
 </ul>
