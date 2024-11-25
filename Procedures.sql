@@ -493,3 +493,94 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+-- USER STORY Reservations --
+-- Check if the reservation list is overbooked
+DELIMITER $$
+CREATE PROCEDURE InsertReservationWithOverbooking(
+    IN p_CustomerID INT,
+    IN p_ReservationDate DATETIME,
+    IN p_NumberOfPeople INT,
+    IN p_SpecialRequests TEXT
+)
+BEGIN
+    DECLARE base_capacity INT;
+    DECLARE overbooking_percentage DECIMAL(5, 2);
+    DECLARE overbooking_limit INT;
+    DECLARE current_reservations INT;
+
+    -- Fetch base capacity and overbooking percentage from the restaurant info
+    SELECT BaseCapacity, OverbookingPercentage INTO base_capacity, overbooking_percentage
+    FROM Restaurant
+    WHERE RestaurantID = 1;
+
+    -- Calculate overbooking limit
+    SET overbooking_limit = base_capacity * (1 + (overbooking_percentage / 100));
+
+    -- Count current reservations for the date
+    SELECT COUNT(*) INTO current_reservations
+    FROM Reservation
+    WHERE DATE(ReservationDate) = DATE(p_ReservationDate);
+
+    -- Check if reservation is within the limit
+    IF current_reservations < overbooking_limit THEN
+        INSERT INTO Reservation (CustomerID, ReservationDate, PartySize, Status, SpecialRequests)
+        VALUES (p_CustomerID, p_ReservationDate, p_NumberOfPeople, 'Confirmed', p_SpecialRequests);
+    ELSE
+        INSERT INTO Reservation (CustomerID, ReservationDate, PartySize, Status, SpecialRequests)
+        VALUES (p_CustomerID, p_ReservationDate, p_NumberOfPeople, 'Waitlisted', p_SpecialRequests);
+    END IF;
+END $$
+DELIMITER ;
+
+-- Cancel a reservation and update the waitlist
+DELIMITER $$
+CREATE PROCEDURE CancelReservation (
+    IN p_ReservationID INT
+)
+BEGIN
+    DECLARE v_TableID INT;
+    DECLARE v_TimeSlotID INT;
+    DECLARE v_NextWaitlistReservationID INT;
+
+    -- Retrieve table and timeslot for the reservation
+    SELECT TableID, TimeSlotID INTO v_TableID, v_TimeSlotID
+    FROM Reservation
+    WHERE ReservationID = p_ReservationID;
+
+    -- Mark the reservation as cancelled
+    UPDATE Reservation
+    SET Status = 'Cancelled'
+    WHERE ReservationID = p_ReservationID;
+
+    -- Make the table available again
+    UPDATE TableAvailability
+    SET IsAvailable = TRUE
+    WHERE TableID = v_TableID AND TimeSlotID = v_TimeSlotID;
+
+    -- Check if there is a waitlist for the same timeslot
+    SELECT ReservationID INTO v_NextWaitlistReservationID
+    FROM Reservation
+    WHERE Status = 'Waitlisted' AND TimeSlotID = v_TimeSlotID
+    ORDER BY WaitlistPosition ASC
+    LIMIT 1;
+
+    IF v_NextWaitlistReservationID IS NOT NULL THEN
+        -- Confirm the first waitlisted reservation
+        UPDATE Reservation
+        SET Status = 'Confirmed', TableID = v_TableID, WaitlistPosition = NULL
+        WHERE ReservationID = v_NextWaitlistReservationID;
+
+        -- Mark the table as unavailable
+        UPDATE TableAvailability
+        SET IsAvailable = FALSE
+        WHERE TableID = v_TableID AND TimeSlotID = v_TimeSlotID;
+
+        -- Adjust waitlist positions
+        UPDATE Reservation
+        SET WaitlistPosition = WaitlistPosition - 1
+        WHERE Status = 'Waitlisted' AND TimeSlotID = v_TimeSlotID;
+    END IF;
+END $$
+DELIMITER ;

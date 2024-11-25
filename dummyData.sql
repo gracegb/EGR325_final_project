@@ -1,4 +1,9 @@
 USE restaurant;
+
+-- Insert a valid restaurant if needed
+INSERT INTO Restaurant (RestaurantName, Location, PhoneNumber, OpeningHours, BaseCapacity, OverbookingPercentage)
+VALUES ('Sample Restaurant', '123 Sample St', '555-123-4567', '11:00-22:00', 100, 0.2);
+
 -- INSERT DIFFERENT MENUS
 INSERT INTO Menu (RestaurantID, MenuName, MenuDescription, StartTime, EndTime) VALUES
     (1, 'Main', 'Menu of all the main entrees, appetizers, and non-alcoholic drinks', '11:30', '21:30'),
@@ -175,20 +180,51 @@ INSERT INTO SupplierIngredientCatalog (SupplierID, InventoryItemID, UnitPrice) V
 (8, 35, 0.20),  -- Gyoza Wrappers
 (8, 22, 0.75);  -- Cabbage
 
--- Customer dummy data
+-- Insert dining tables with seat capacities and types
+INSERT INTO DiningTable (Seats, Type, IsAvailable) VALUES
+(4, 'Standard', TRUE),
+(4, 'Standard', TRUE),
+(6, 'Booth', TRUE),
+(6, 'Booth', TRUE),
+(8, 'Large', TRUE),
+(8, 'Large', TRUE),
+(10, 'Private Room', TRUE),
+(10, 'Private Room', TRUE),
+(4, 'Teppan', TRUE),
+(6, 'Teppan', TRUE);
+
+-- Insert timeslots for 30-minute increments during restaurant hours
+INSERT INTO Timeslot (StartTime, EndTime) VALUES
+('11:30:00', '12:00:00'),
+('12:00:00', '12:30:00'),
+('12:30:00', '13:00:00'),
+('13:00:00', '13:30:00'),
+('13:30:00', '14:00:00'),
+('14:00:00', '14:30:00'),
+('17:00:00', '17:30:00'),
+('17:30:00', '18:00:00'),
+('18:00:00', '18:30:00'),
+('18:30:00', '19:00:00'),
+('19:00:00', '19:30:00'),
+('19:30:00', '20:00:00'),
+('20:00:00', '20:30:00'),
+('20:30:00', '21:00:00');
+
+-- Map tables to timeslots, all initially available
+INSERT INTO TableAvailability (TableID, TimeSlotID, IsAvailable) VALUES
+(1, 1, TRUE), (1, 2, TRUE), (1, 3, TRUE), (1, 4, TRUE), (1, 5, TRUE),
+(2, 1, TRUE), (2, 2, TRUE), (2, 3, TRUE), (2, 4, TRUE), (2, 5, TRUE),
+(3, 6, TRUE), (3, 7, TRUE), (3, 8, TRUE), (3, 9, TRUE), (3, 10, TRUE),
+(4, 6, TRUE), (4, 7, TRUE), (4, 8, TRUE), (4, 9, TRUE), (4, 10, TRUE),
+(5, 11, TRUE), (5, 12, TRUE), (5, 13, TRUE), (5, 14, TRUE), (5, 15, TRUE),
+(6, 11, TRUE), (6, 12, TRUE), (6, 13, TRUE), (6, 14, TRUE), (6, 15, TRUE);
+
+-- Add sample customers
 INSERT INTO Customer (CustomerName, CustomerEmail, PhoneNumber, Address) VALUES
-	('John Smith', 'johnsmith@gmail.com', '1234567890', '123 Mag Ave, Riverside, CA'),
-	('Jane Doe', 'janedoe@gmail.com', '2345678901', '123 Mag Ave, Riverside, CA'),
-	('Ronald Ellis', 'rellis@gmail.com', '4567890123', '456 Mag Ave, Riverside, CA');
+('Bob White', 'bobwhite@gmail.com', '5678901234', '321 Cedar St, Riverside, CA'),
+('Chris Green', 'chrisgreen@gmail.com', '5678901233', '654 Maple St, Riverside, CA');
 
--- Reservation dummy data
-INSERT INTO Reservation (CustomerID, ReservationDate, PartySize, Status, SpecialRequests) VALUES
-	(1,'2024-11-15 18:30:00', 3, 'Confirmed', 'N/A'),
-    	(2,'2024-11-15 15:00:00', 8, 'Cancelled', 'wheelchair accessible'),
-	(3,'2024-11-16 19:00:00', 2, 'Confirmed', 'birthday');
-
--- Waitlist dummy data
-INSERT INTO Waitlist(ReservationID, Position, DateAdded) VALUES
-    (1, 1, '2024-11-16 12:00:00'),
-    (2, 2, '2024-11-16 12:30:00'),
-    (3, 3, '2024-11-16 13:00:00');
+-- Add reservations for customers, assigning tables and timeslots
+INSERT INTO Reservation (CustomerID, TableID, TimeSlotID, PartySize, Status, SpecialRequests) VALUES
+(4, 4, 9, 6, 'Waitlisted', 'Highchair needed'),
+(5, 5, 13, 8, 'Confirmed', 'Anniversary dinner');
