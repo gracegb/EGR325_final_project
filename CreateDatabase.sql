@@ -1,3 +1,4 @@
+DROP DATABASE restaurant;
 CREATE DATABASE IF NOT EXISTS restaurant;
 USE restaurant;
 
@@ -37,21 +38,6 @@ CREATE TABLE TableAvailability (
     FOREIGN KEY (TimeSlotID) REFERENCES Timeslot(TimeSlotID)
 );
 
--- Reservations (Updated to move WaitlistPosition to this table)
-CREATE TABLE Reservation (
-    ReservationID INT AUTO_INCREMENT PRIMARY KEY,
-    CustomerID INT NOT NULL,
-    TableID INT NOT NULL,
-    TimeSlotID INT NOT NULL,
-    PartySize INT NOT NULL,
-    WaitlistPosition INT DEFAULT NULL,   -- Moved WaitlistPosition to Reservation table
-    Status ENUM('Confirmed', 'Waitlisted') DEFAULT 'Confirmed',
-    SpecialRequests TEXT,
-    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
-    FOREIGN KEY (TableID) REFERENCES DiningTable(TableID),
-    FOREIGN KEY (TimeSlotID) REFERENCES Timeslot(TimeSlotID)
-);
-
 -- Customers
 CREATE TABLE Customer (
     CustomerID INT NOT NULL AUTO_INCREMENT,
@@ -60,6 +46,22 @@ CREATE TABLE Customer (
     PhoneNumber VARCHAR(15) NOT NULL UNIQUE,
     Address VARCHAR(225),
     PRIMARY KEY (CustomerID)
+);
+
+-- Reservations (Updated to move WaitlistPosition to this table)
+CREATE TABLE Reservation (
+    ReservationID INT AUTO_INCREMENT PRIMARY KEY,
+    CustomerID INT NOT NULL,
+    TableID INT NOT NULL,
+    TimeSlotID INT NOT NULL,
+    ReservationDate DATETIME NOT NULL,
+    PartySize INT NOT NULL,
+    WaitlistPosition INT DEFAULT NULL,   -- Moved WaitlistPosition to Reservation table
+    Status ENUM('Confirmed', 'Waitlisted') DEFAULT 'Confirmed',
+    SpecialRequests TEXT,
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+    FOREIGN KEY (TableID) REFERENCES DiningTable(TableID),
+    FOREIGN KEY (TimeSlotID) REFERENCES Timeslot(TimeSlotID)
 );
 
 -- Menu

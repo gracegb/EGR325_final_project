@@ -457,58 +457,45 @@ END //
 
 DELIMITER ;
 
--- checking if reservation is overbooked
-
-DELIMITER $$
-
-CREATE PROCEDURE InsertReservationWithOverbooking(
-    IN p_CustomerID INT,
-    IN p_ReservationDate DATETIME,
-    IN p_NumberOfPeople INT,
-    IN p_SpecialRequests TEXT
-)
-BEGIN
-    DECLARE base_capacity INT;
-    DECLARE overbooking_percentage DECIMAL(5, 2);
-    DECLARE overbooking_limit INT;
-    DECLARE current_reservations INT;
-
-    SELECT BaseCapacity, OverbookingPercentage INTO base_capacity, overbooking_percentage
-    FROM RestaurantConfig
-    WHERE ConfigID = 1;  
-
-    SET overbooking_limit = base_capacity * (1 + (overbooking_percentage / 100));
-
-    SELECT COUNT(*) INTO current_reservations
-    FROM Reservation
-    WHERE DATE(ReservationDate) = DATE(p_ReservationDate);
-
-    IF current_reservations < overbooking_limit THEN
-        INSERT INTO Reservation (CustomerID, ReservationDate, NumberOfPeople, Status, SpecialRequests)
-        VALUES (p_CustomerID, p_ReservationDate, p_NumberOfPeople, 'Confirmed', p_SpecialRequests);
-    ELSE
-        INSERT INTO Reservation (CustomerID, ReservationDate, NumberOfPeople, Status, SpecialRequests)
-        VALUES (p_CustomerID, p_ReservationDate, p_NumberOfPeople, 'Waitlisted', p_SpecialRequests);
-    END IF;
-END $$
-
-DELIMITER ;
-
-
 -- USER STORY Reservations --
+DROP PROCEDURE InsertReservationWithOverbooking;
 -- Check if the reservation list is overbooked
 DELIMITER $$
+
 CREATE PROCEDURE InsertReservationWithOverbooking(
-    IN p_CustomerID INT,
+    IN p_CustomerName VARCHAR(100),
+    IN p_CustomerEmail VARCHAR(150),
+    IN p_CustomerPhoneNumber VARCHAR(15),
     IN p_ReservationDate DATETIME,
     IN p_NumberOfPeople INT,
     IN p_SpecialRequests TEXT
 )
 BEGIN
+    DECLARE v_CustomerID INT;
+    DECLARE v_CustomerExists INT;
+    DECLARE v_TableID INT;
+    DECLARE v_TimeSlotID INT;
     DECLARE base_capacity INT;
     DECLARE overbooking_percentage DECIMAL(5, 2);
     DECLARE overbooking_limit INT;
     DECLARE current_reservations INT;
+
+    -- Check if the customer already exists
+    SELECT COUNT(*) INTO v_CustomerExists
+    FROM Customer
+    WHERE CustomerEmail = p_CustomerEmail;
+
+    IF v_CustomerExists = 0 THEN
+        -- Insert new customer if they don't exist
+        INSERT INTO Customer (CustomerName, CustomerEmail, PhoneNumber)
+        VALUES (p_CustomerName, p_CustomerEmail, p_CustomerPhoneNumber);
+        SET v_CustomerID = LAST_INSERT_ID();
+    ELSE
+        -- Retrieve the existing CustomerID
+        SELECT CustomerID INTO v_CustomerID
+        FROM Customer
+        WHERE CustomerEmail = p_CustomerEmail;
+    END IF;
 
     -- Fetch base capacity and overbooking percentage from the restaurant info
     SELECT BaseCapacity, OverbookingPercentage INTO base_capacity, overbooking_percentage
@@ -516,23 +503,57 @@ BEGIN
     WHERE RestaurantID = 1;
 
     -- Calculate overbooking limit
-    SET overbooking_limit = base_capacity * (1 + (overbooking_percentage / 100));
+    SET overbooking_limit = base_capacity + (base_capacity * overbooking_percentage);
 
     -- Count current reservations for the date
     SELECT COUNT(*) INTO current_reservations
     FROM Reservation
     WHERE DATE(ReservationDate) = DATE(p_ReservationDate);
 
+    -- Find the appropriate TimeSlotID for the reservation time
+    SELECT TimeSlotID INTO v_TimeSlotID
+    FROM Timeslot
+    WHERE StartTime <= TIME(p_ReservationDate) AND EndTime > TIME(p_ReservationDate)
+    LIMIT 1;
+
+    IF v_TimeSlotID IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No available time slot for the given reservation date and time.';
+    END IF;
+
+    -- Find an available table (if any) for the time slot
+    SELECT TableID INTO v_TableID
+    FROM TableAvailability
+    WHERE IsAvailable = TRUE
+      AND TimeSlotID = v_TimeSlotID
+    LIMIT 1;
+
     -- Check if reservation is within the limit
     IF current_reservations < overbooking_limit THEN
-        INSERT INTO Reservation (CustomerID, ReservationDate, PartySize, Status, SpecialRequests)
-        VALUES (p_CustomerID, p_ReservationDate, p_NumberOfPeople, 'Confirmed', p_SpecialRequests);
+        -- Insert confirmed reservation
+        INSERT INTO Reservation (CustomerID, TableID, TimeSlotID, ReservationDate, PartySize, Status, SpecialRequests)
+        VALUES (v_CustomerID, v_TableID, v_TimeSlotID, p_ReservationDate, p_NumberOfPeople, 'Confirmed', p_SpecialRequests);
+
+        -- Mark the table as unavailable if a table was assigned
+        IF v_TableID IS NOT NULL THEN
+            UPDATE TableAvailability
+            SET IsAvailable = FALSE
+            WHERE TableID = v_TableID
+              AND TimeSlotID = v_TimeSlotID;
+        END IF;
     ELSE
-        INSERT INTO Reservation (CustomerID, ReservationDate, PartySize, Status, SpecialRequests)
-        VALUES (p_CustomerID, p_ReservationDate, p_NumberOfPeople, 'Waitlisted', p_SpecialRequests);
+        -- Insert waitlisted reservation
+        INSERT INTO Reservation (CustomerID, TableID, TimeSlotID, ReservationDate, PartySize, Status, WaitlistPosition, SpecialRequests)
+        VALUES (
+            v_CustomerID, NULL, v_TimeSlotID, p_ReservationDate, p_NumberOfPeople, 'Waitlisted',
+            (SELECT COALESCE(MAX(WaitlistPosition), 0) + 1 FROM Reservation WHERE Status = 'Waitlisted' AND TimeSlotID = v_TimeSlotID),
+            p_SpecialRequests
+        );
     END IF;
 END $$
+
 DELIMITER ;
+
+
 
 -- Cancel a reservation and update the waitlist
 DELIMITER $$
@@ -549,38 +570,42 @@ BEGIN
     FROM Reservation
     WHERE ReservationID = p_ReservationID;
 
-    -- Mark the reservation as cancelled
-    UPDATE Reservation
-    SET Status = 'Cancelled'
-    WHERE ReservationID = p_ReservationID;
-
-    -- Make the table available again
-    UPDATE TableAvailability
-    SET IsAvailable = TRUE
-    WHERE TableID = v_TableID AND TimeSlotID = v_TimeSlotID;
-
-    -- Check if there is a waitlist for the same timeslot
-    SELECT ReservationID INTO v_NextWaitlistReservationID
-    FROM Reservation
-    WHERE Status = 'Waitlisted' AND TimeSlotID = v_TimeSlotID
-    ORDER BY WaitlistPosition ASC
-    LIMIT 1;
-
-    IF v_NextWaitlistReservationID IS NOT NULL THEN
-        -- Confirm the first waitlisted reservation
+    IF v_TableID IS NULL OR v_TimeSlotID IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid Reservation ID';
+    ELSE
+        -- Mark the reservation as cancelled
         UPDATE Reservation
-        SET Status = 'Confirmed', TableID = v_TableID, WaitlistPosition = NULL
-        WHERE ReservationID = v_NextWaitlistReservationID;
+        SET Status = 'Cancelled'
+        WHERE ReservationID = p_ReservationID;
 
-        -- Mark the table as unavailable
+        -- Make the table available again
         UPDATE TableAvailability
-        SET IsAvailable = FALSE
+        SET IsAvailable = TRUE
         WHERE TableID = v_TableID AND TimeSlotID = v_TimeSlotID;
 
-        -- Adjust waitlist positions
-        UPDATE Reservation
-        SET WaitlistPosition = WaitlistPosition - 1
-        WHERE Status = 'Waitlisted' AND TimeSlotID = v_TimeSlotID;
+        -- Check if there is a waitlist for the same timeslot
+        SELECT ReservationID INTO v_NextWaitlistReservationID
+        FROM Reservation
+        WHERE Status = 'Waitlisted' AND TimeSlotID = v_TimeSlotID
+        ORDER BY WaitlistPosition ASC
+        LIMIT 1;
+
+        IF v_NextWaitlistReservationID IS NOT NULL THEN
+            -- Confirm the first waitlisted reservation
+            UPDATE Reservation
+            SET Status = 'Confirmed', TableID = v_TableID, WaitlistPosition = NULL
+            WHERE ReservationID = v_NextWaitlistReservationID;
+
+            -- Mark the table as unavailable
+            UPDATE TableAvailability
+            SET IsAvailable = FALSE
+            WHERE TableID = v_TableID AND TimeSlotID = v_TimeSlotID;
+
+            -- Adjust waitlist positions
+            UPDATE Reservation
+            SET WaitlistPosition = WaitlistPosition - 1
+            WHERE Status = 'Waitlisted' AND TimeSlotID = v_TimeSlotID;
+        END IF;
     END IF;
 END $$
 DELIMITER ;
