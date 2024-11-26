@@ -216,8 +216,8 @@ INSERT INTO TableAvailability (TableID, TimeSlotID, IsAvailable) VALUES
 (2, 1, TRUE), (2, 2, TRUE), (2, 3, TRUE), (2, 4, TRUE), (2, 5, TRUE),
 (3, 6, TRUE), (3, 7, TRUE), (3, 8, TRUE), (3, 9, TRUE), (3, 10, TRUE),
 (4, 6, TRUE), (4, 7, TRUE), (4, 8, TRUE), (4, 9, TRUE), (4, 10, TRUE),
-(5, 11, TRUE), (5, 12, TRUE), (5, 13, TRUE), (5, 14, TRUE), (5, 15, TRUE),
-(6, 11, TRUE), (6, 12, TRUE), (6, 13, TRUE), (6, 14, TRUE), (6, 15, TRUE);
+(5, 11, TRUE), (5, 12, TRUE), (5, 13, TRUE), (5, 14, TRUE),
+(6, 11, TRUE), (6, 12, TRUE), (6, 13, TRUE), (6, 14, TRUE);
 
 -- Add sample customers
 INSERT INTO Customer (CustomerName, CustomerEmail, PhoneNumber, Address) VALUES
@@ -225,6 +225,6 @@ INSERT INTO Customer (CustomerName, CustomerEmail, PhoneNumber, Address) VALUES
 ('Chris Green', 'chrisgreen@gmail.com', '5678901233', '654 Maple St, Riverside, CA');
 
 -- Add reservations for customers, assigning tables and timeslots
-INSERT INTO Reservation (CustomerID, TableID, TimeSlotID, PartySize, Status, SpecialRequests) VALUES
-(4, 4, 9, 6, 'Waitlisted', 'Highchair needed'),
-(5, 5, 13, 8, 'Confirmed', 'Anniversary dinner');
+INSERT INTO Reservation (CustomerID, TableID, TimeSlotID, ReservationDate, PartySize, Status, SpecialRequests) VALUES
+(1, 4, 9, '2024-11-26', 6, 'Waitlisted', 'Highchair needed'),
+(2, 5, 13, '2024-11-26', 8, 'Confirmed', 'Anniversary dinner');
