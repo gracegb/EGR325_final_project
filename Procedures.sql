@@ -587,18 +587,22 @@ BEGIN
         WaitlistPosition = NULL
     WHERE ReservationID = p_ReservationID;
 
-    -- Update the waitlist positions for other reservations
+    -- Use a temporary table to hold the IDs of reservations to update
+    CREATE TEMPORARY TABLE TempWaitlistReservations (ReservationID INT);
+
+    INSERT INTO TempWaitlistReservations (ReservationID)
+    SELECT ReservationID
+    FROM Reservation
+    WHERE ReservationStatus = 'Waitlisted'
+      AND WaitlistPosition > v_WaitlistPosition;
+
+    -- Update the waitlist positions using the temporary table
     UPDATE Reservation
     SET WaitlistPosition = WaitlistPosition - 1
-    WHERE ReservationID IN (
-        SELECT ReservationID
-        FROM (
-            SELECT ReservationID
-            FROM Reservation
-            WHERE ReservationStatus = 'Waitlisted'
-              AND WaitlistPosition > v_WaitlistPosition
-        ) AS SubQuery
-    );
+    WHERE ReservationID IN (SELECT ReservationID FROM TempWaitlistReservations);
+
+    -- Drop the temporary table
+    DROP TEMPORARY TABLE TempWaitlistReservations;
 END$$
 
 DELIMITER ;

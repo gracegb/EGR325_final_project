@@ -6,7 +6,7 @@ CALL CancelReservation(3);
 
 SELECT * FROM Reservation;
 
-CALL PromoteFromWaitlist(8);
+CALL PromoteFromWaitlist(1);
 
 
 
