@@ -457,7 +457,7 @@ END //
 
 DELIMITER ;
 
--- USER STORY Reservations --
+-- USER STORY Reservations!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --
 DELIMITER $$
 
 CREATE PROCEDURE InsertReservation (
@@ -509,7 +509,7 @@ END$$
 DELIMITER ;
 
 
-DROP PROCEDURE CancelReservation;
+DROP PROCEDURE IF EXISTS CancelReservation;
 
 DELIMITER $$
 
@@ -565,7 +565,7 @@ DELIMITER ;
 
 
 
-DROP PROCEDURE PromoteFromWaitlist;
+DROP PROCEDURE IF EXISTS PromoteFromWaitlist;
 
 DELIMITER $$
 
