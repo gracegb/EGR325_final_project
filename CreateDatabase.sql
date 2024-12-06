@@ -17,7 +17,7 @@ CREATE TABLE Restaurant (
 CREATE TABLE DiningTable (
     TableID INT AUTO_INCREMENT PRIMARY KEY,
     Seats INT NOT NULL,
-    Type VARCHAR(50),
+    TableType VARCHAR(50),
     IsAvailable BOOLEAN DEFAULT TRUE -- Optional, for tracking overall status
 );
 
@@ -57,7 +57,7 @@ CREATE TABLE Reservation (
     ReservationDate DATETIME NOT NULL,
     PartySize INT NOT NULL,
     WaitlistPosition INT DEFAULT NULL,   -- Moved WaitlistPosition to Reservation table
-    Status ENUM('Confirmed', 'Waitlisted') DEFAULT 'Confirmed',
+    ReservationStatus ENUM('Confirmed', 'Waitlisted') DEFAULT 'Confirmed',
     SpecialRequests TEXT,
     FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
     FOREIGN KEY (TableID) REFERENCES DiningTable(TableID),
