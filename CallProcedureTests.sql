@@ -4,14 +4,14 @@ USE restaurant;
 SELECT * FROM Menu;
 
 -- Menu Procedures
-CALL DeleteMenu('Drink');
-CALL AddMenu(1, 'Drink', 'Non-Alcholic Drinks', '11:30' , '21:30');
-CALL UpdateMenuTimeWindow (1, time, time);
+CALL DeleteMenu(12);
+CALL AddMenu('Drink', 'Alcholic Drinks', '11:30' , '21:30');
+CALL UpdateMenuTimeWindow (4, '19:00', '20:00');
 
 SELECT * FROM MenuContent;
 -- Menu Content Procedures
-CALL AddItemToMenu(7, 35);
-CALL RemoveItemFromMenu(7,35);
+CALL AddItemToMenu(1,1);
+CALL RemoveItemFromMenu(1,1);
 
 SELECT * FROM MenuItem;
 --  Menu Item Procedures
