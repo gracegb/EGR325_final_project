@@ -1,4 +1,3 @@
-
 USE restaurant;
 
 -- View Menu
@@ -9,29 +8,34 @@ CALL DeleteMenu('Drink');
 CALL AddMenu(1, 'Drink', 'Non-Alcholic Drinks', '11:30' , '21:30');
 CALL UpdateMenuTimeWindow (1, time, time);
 
+SELECT * FROM MenuContent;
 -- Menu Content Procedures
 CALL AddItemToMenu(7, 35);
 CALL RemoveItemFromMenu(7,35);
 
+SELECT * FROM MenuItem;
 --  Menu Item Procedures
 CALL AddMenuItem ('Calamari', 12.00, 'Fried Octopus');
-CALL DeleteMenuItem()
-CALL UpdateMenuItemPrice()
+CALL DeleteMenuItem(37);
+CALL UpdateMenuItemPrice(36, 12.50);
 
+SELECT * FROM Ingredient;
 -- Menu Item Recipe/Ingredients Procedures
-CALL AddIngredient();
-CALL DeleteIngredient();
-CALL UpdateIngredientQuantityUnit();
+CALL AddIngredient(1,1, 4, 'oz');
+CALL DeleteIngredient(1,1);
+CALL UpdateIngredientQuantityUnit(1,1, 0.25, 'lb');
 
+SELECT * FROM InventoryItem;
 -- Inventory Item Procedures
-CALL AddInventoryItem ();
-CALL DeleteInventoryItem();
-CALL UpdateInventoryItemQuantity();
+CALL AddInventoryItem ('Cherry Tomatos', 5, 12, 'lb', 2);
+CALL DeleteInventoryItem(40);
+CALL UpdateInventoryItemQuantity(40, 3);
 
+SELECT * FROM Supplier;
 -- Supplier Procedures
-CALL AddSupplier();
-CALL DeleteSupplier();
-CALL UpdateSupplierInformation();
+CALL AddSupplier('Good Grains Co.', 'John Doe', '555-1234', 'john.doe@goodgrains.com', '123 Grain St, Riverside, CA 92501');
+CALL DeleteSupplier(11);
+CALL UpdateSupplierContactInfo(10, 'John Doe', '555-1234', 'john.doe@dimsumimports.com');
 
 
 
