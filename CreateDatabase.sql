@@ -106,9 +106,9 @@ CREATE TABLE Supplier (
 CREATE TABLE InventoryItem ( -- Assumptions: Only ONE INVENTORY
     InventoryItemID INT AUTO_INCREMENT PRIMARY KEY,
     InventoryItemName VARCHAR(255) NOT NULL,    -- e.g., 'Flour', 'Sugar'
-    NumUnits INT,
-    QuantityPerUnit SMALLINT,
-    Units VARCHAR(50), -- 'liters' 'Cups' 'Gallons,' 'lb', 'kg', ' 'oz'
+    TotalUnits INT,
+    AmountPerUnit SMALLINT,
+    UnitType VARCHAR(50), -- 'liters' 'Cups' 'Gallons,' 'lb', 'kg', ' 'oz'
     ThresholdNumUnits INT,
     SupplierID INT NOT NULL,
     FOREIGN KEY (SupplierID) REFERENCES Supplier(SupplierID)
