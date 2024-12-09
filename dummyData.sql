@@ -65,60 +65,60 @@ INSERT INTO Supplier (SupplierName, ContactName, PhoneNumber, Email, SupplierAdd
 ('Italian Herb Co.', 'Catherine White', '(555) 112-2334', 'catherine@herbco.com', '345 Herb St, Riverside, CA 92506'),
 ('Dim Sum Imports', 'Henry Wang', '(555) 777-0001', 'henry@dimsumimports.com', '567 Dumpling Ave, Riverside, CA 92506');
 
-INSERT INTO InventoryItem (InventoryItemName, NumUnits, QuantityPerUnit, Units, ThresholdNumUnits, SupplierID) VALUES
+INSERT INTO InventoryItem (InventoryItemName, TotalUnits, AmountPerUnit, UnitType, Threshold) VALUES
 
 -- Meat and Seafood (assumed SupplierID for Quality Meats)
-('Chicken Breast', 20, 4, 'lb', 10, 3),
-('Beef Sirloin', 20, 4, 'lb', 15, 3),
-('Shrimp', 20, 4, 'lb', 5, 2),
-('Salmon', 20, 4, 'lb', 12, 2),
-('Tuna', 20, 4, 'lb', 8, 2),
-('Crab', 20, 4, 'lb', 6, 2),
+('Chicken Breast', 20, 4, 'lb', 10),
+('Beef Sirloin', 20, 4, 'lb', 15),
+('Shrimp', 20, 4, 'lb', 5),
+('Salmon', 20, 4, 'lb', 12),
+('Tuna', 20, 4, 'lb', 8),
+('Crab', 20, 4, 'lb', 6),
 
 -- Vegetables (assumed SupplierID for Fresh Farms Produce)
-('Cabbage', 20, 4, 'lb', 10, 1),
-('Carrots', 20, 4, 'lb', 20, 1),
-('Cucumber', 20, 4, 'lb', 25, 1),
-('Avocado', 20, 4, 'lb', 18, 1),
-('Mixed Greens', 20, 4, 'lb', 15, 1),
-('Radish Sprouts', 20, 4, 'lb', 12, 1),
+('Cabbage', 20, 4, 'lb', 10),
+('Carrots', 20, 4, 'lb', 20),
+('Cucumber', 20, 4, 'lb', 25),
+('Avocado', 20, 4, 'lb', 18),
+('Mixed Greens', 20, 4, 'lb', 15),
+('Radish Sprouts', 20, 4, 'lb', 12),
 
 -- Seasonings and Sauces (assumed SupplierID for Gourmet Spice Co.)
-('Soy Sauce', 50, 1, 'bottle', 30, 6),
-('Teriyaki Sauce', 30, 1, 'bottle', 25, 6),
-('Ponzu Sauce', 30, 1, 'bottle', 20, 6),
-('Miso Paste', 20, 1, 'bottle', 15, 6),
-('Tempura Batter Mix', 20, 4, 'lb', 10, 6),
+('Soy Sauce', 50, 1, 'bottle', 30),
+('Teriyaki Sauce', 30, 1, 'bottle', 25),
+('Ponzu Sauce', 30, 1, 'bottle', 20),
+('Miso Paste', 20, 1, 'bottle', 15),
+('Tempura Batter Mix', 20, 4, 'lb', 10),
 
 -- Other (assumed SupplierID for Sushi Essentials)
-('Sushi Rice', 50, 4, 'lb', 40, 4),
-('Nori Seaweed', 100, 1, 'pack', 50, 4),
-('Egg Roll Wrappers', 50, 1, 'pack', 4, 4),
-('Gyoza Wrappers', 50, 1, 'pack', 4, 4),
-('Tofu', 20, 4, 'lb', 30, 4),
-('Garlic', 30, 1, 'lb', 25, 4),
-('Ginger', 30, 1, 'lb', 25, 4),
+('Sushi Rice', 50, 4, 'lb', 40),
+('Nori Seaweed', 100, 1, 'pack', 50),
+('Egg Roll Wrappers', 50, 1, 'pack', 4),
+('Gyoza Wrappers', 50, 1, 'pack', 4),
+('Tofu', 20, 4, 'lb', 30),
+('Garlic', 30, 1, 'lb', 25),
+('Ginger', 30, 1, 'lb', 25),
 
 -- Desserts (assumed SupplierID for Organic Dairy Farms)
-('Mochi Ice Cream', 50, 1, 'pack', 15, 5),
-('Cheesecake Ingredients', 30, 1, 'pack', 10, 5),
-('Red Bean Paste', 20, 1, 'lb', 8, 4),
-('Buns', 40, 1, 'pack', 20, 4),
+('Mochi Ice Cream', 50, 1, 'pack', 15),
+('Cheesecake Ingredients', 30, 1, 'pack', 10),
+('Red Bean Paste', 20, 1, 'lb', 8),
+('Buns', 40, 1, 'pack', 20),
 
 -- Beverages (assumed SupplierID for Sea Harvest Suppliers)
-('Soft Drinks & Iced Teas', 100, 1, 'bottle', 50, 7),
-('Strawberries', 30, 1, 'lb', 20, 1),
-('Lemonade', 50, 1, 'bottle', 30, 7),
-('GingerAle', 50, 1,'bottle', 25, 7),
+('Soft Drinks & Iced Teas', 100, 1, 'bottle', 50),
+('Strawberries', 30, 1, 'lb', 20),
+('Lemonade', 50, 1, 'bottle', 30),
+('GingerAle', 50, 1,'bottle', 25),
 
 -- Alcohol (assumed SupplierID for Sea Harvest Suppliers)
-('Rum', 20, 1, 'bottle', 10, 7),
-('Vodka', 20, 1, 'bottle', 10, 7),
-('Blue Curaçao', 20, 1,'bottle', 10, 7),
-('Beer', 100, 1, 'bottle', 50, 7),
-('Sake', 50, 1, 'bottle', 15, 7),
-('Chardonnay', 30, 1, 'bottle', 20, 7),
-('Cabernet', 30, 1, 'bottle', 20, 7);
+('Rum', 20, 1, 'bottle', 10),
+('Vodka', 20, 1, 'bottle', 10),
+('Blue Curaçao', 20, 1,'bottle', 10),
+('Beer', 100, 1, 'bottle', 50),
+('Sake', 50, 1, 'bottle', 15),
+('Chardonnay', 30, 1, 'bottle', 20),
+('Cabernet', 30, 1, 'bottle', 20);
 
 INSERT INTO SupplierIngredientCatalog (SupplierID, InventoryItemID, UnitPrice) VALUES
 
