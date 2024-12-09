@@ -109,7 +109,7 @@ CREATE TABLE InventoryItem ( -- Assumptions: Only ONE INVENTORY
     TotalUnits INT,
     AmountPerUnit SMALLINT,
     UnitType VARCHAR(50), -- 'liters' 'Cups' 'Gallons,' 'lb', 'kg', ' 'oz'
-    ThresholdNumUnits INT,
+    Threshold INT,
     SupplierID INT NOT NULL,
     FOREIGN KEY (SupplierID) REFERENCES Supplier(SupplierID)
 );
