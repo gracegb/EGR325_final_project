@@ -117,14 +117,16 @@ CREATE TABLE Ingredient (
     MenuItemID INT NOT NULL,
     InventoryItemID INT NOT NULL,
     Quantity DECIMAL(10, 2) NOT NULL, -- Quantity needed for the menu item
-    Units VARCHAR(50),
+    UnitType VARCHAR(50),
     FOREIGN KEY (MenuItemID) REFERENCES MenuItem(MenuItemID),
     FOREIGN KEY (InventoryItemID) REFERENCES InventoryItem(InventoryItemID)
 );
 
 -- SupplierIngredient join table
-CREATE TABLE SupplierIngredientCatalog (
+CREATE TABLE SupplierCatalog (
     SupplierID INT NOT NULL,
     InventoryItemID INT NOT NULL,
     UnitPrice DECIMAL(5,2) NOT NULL
+    FOREIGN KEY (SupplierID) REFERENCES Supplier(SupplierID),
+    FOREIGN KEY (InventoryItemID) REFERENCES InventoryItem(InventoryItemID)
 );
