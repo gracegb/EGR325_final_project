@@ -126,7 +126,7 @@ CREATE TABLE Ingredient (
 CREATE TABLE SupplierCatalog (
     SupplierID INT NOT NULL,
     InventoryItemID INT NOT NULL,
-    UnitPrice DECIMAL(5,2) NOT NULL
+    UnitPrice DECIMAL(5,2) NOT NULL,
     FOREIGN KEY (SupplierID) REFERENCES Supplier(SupplierID),
     FOREIGN KEY (InventoryItemID) REFERENCES InventoryItem(InventoryItemID)
 );

@@ -120,65 +120,65 @@ INSERT INTO InventoryItem (InventoryItemName, TotalUnits, AmountPerUnit, UnitTyp
 ('Chardonnay', 30, 1, 'bottle', 20),
 ('Cabernet', 30, 1, 'bottle', 20);
 
-INSERT INTO SupplierIngredientCatalog (SupplierID, InventoryItemID, UnitPrice) VALUES
+-- INSERT INTO SupplierIngredientCatalog (SupplierID, InventoryItemID, UnitPrice) VALUES
 
--- Fresh Farms Produce (SupplierID = 1)
-(1, 1, 5.00),   -- Chicken Breast
-(1, 5, 0.75),   -- Red Onions
-(1, 9, 2.00),   -- Cucumber
-(1, 13, 2.00),  -- Avocado
-(1, 22, 0.75),  -- Cabbage
-(1, 1, 5.00),   -- Chicken Breast (Kids)
-(1, 1, 5.00),   -- Chicken Breast for Teriyaki Chicken (Kids)
+-- -- Fresh Farms Produce (SupplierID = 1)
+-- (1, 1, 5.00),   -- Chicken Breast
+-- (1, 5, 0.75),   -- Red Onions
+-- (1, 9, 2.00),   -- Cucumber
+-- (1, 13, 2.00),  -- Avocado
+-- (1, 22, 0.75),  -- Cabbage
+-- (1, 1, 5.00),   -- Chicken Breast (Kids)
+-- (1, 1, 5.00),   -- Chicken Breast for Teriyaki Chicken (Kids)
 
--- Seafood Fresh (SupplierID = 2)
-(2, 3, 10.00),  -- Shrimp
-(2, 4, 6.00),   -- Tuna
-(2, 5, 12.00),  -- Crab
-(2, 3, 10.00),  -- Fresh Salmon
-(2, 2, 7.00),   -- Beef Sirloin (Kids)
+-- -- Seafood Fresh (SupplierID = 2)
+-- (2, 3, 10.00),  -- Shrimp
+-- (2, 4, 6.00),   -- Tuna
+-- (2, 5, 12.00),  -- Crab
+-- (2, 3, 10.00),  -- Fresh Salmon
+-- (2, 2, 7.00),   -- Beef Sirloin (Kids)
 
--- Quality Meats Co. (SupplierID = 3)
-(3, 21, 5.00),  -- Ground Pork
-(3, 23, 0.50),  -- Soy Sauce
-(3, 1, 5.00),   -- Chicken Breast
-(3, 2, 7.00),   -- Beef Sirloin
-(3, 4, 1.50),   -- Carrots 
-(3, 24, 0.30),  -- Garlic
-(3, 25, 0.30),  -- Ginger
+-- -- Quality Meats Co. (SupplierID = 3)
+-- (3, 21, 5.00),  -- Ground Pork
+-- (3, 23, 0.50),  -- Soy Sauce
+-- (3, 1, 5.00),   -- Chicken Breast
+-- (3, 2, 7.00),   -- Beef Sirloin
+-- (3, 4, 1.50),   -- Carrots 
+-- (3, 24, 0.30),  -- Garlic
+-- (3, 25, 0.30),  -- Ginger
 
--- Organic Dairy Farms (SupplierID = 4)
-(4, 10, 2.50),  -- Cheese
-(4, 16, 0.75),  -- Rice Vinegar
-(4, 17, 0.50),  -- Sugar
-(4, 18, 0.15),  -- Salt
-(4, 19, 1.00),  -- Sesame Seeds
-(4, 32, 1.50),  -- Tempura Batter
+-- -- Organic Dairy Farms (SupplierID = 4)
+-- (4, 10, 2.50),  -- Cheese
+-- (4, 16, 0.75),  -- Rice Vinegar
+-- (4, 17, 0.50),  -- Sugar
+-- (4, 18, 0.15),  -- Salt
+-- (4, 19, 1.00),  -- Sesame Seeds
+-- (4, 32, 1.50),  -- Tempura Batter
 
--- Sushi Essentials (SupplierID = 5)
-(5, 3, 3.00),   -- Mixed Greens
-(5, 41, 0.50),  -- Spicy Mayo
-(5, 44, 10.00), -- Cheesecake Ingredients
-(5, 46, 1.00),  -- Red Bean Paste
-(5, 40, 0.30),  -- Nori Seaweed
-(5, 39, 1.00),  -- Sushi Rice
+-- -- Sushi Essentials (SupplierID = 5)
+-- (5, 3, 3.00),   -- Mixed Greens
+-- (5, 41, 0.50),  -- Spicy Mayo
+-- (5, 44, 10.00), -- Cheesecake Ingredients
+-- (5, 46, 1.00),  -- Red Bean Paste
+-- (5, 40, 0.30),  -- Nori Seaweed
+-- (5, 39, 1.00),  -- Sushi Rice
 
--- Gourmet Spice Co. (SupplierID = 6)
-(6, 26, 0.75),  -- Miso Paste
-(6, 15, 1.50),  -- Soy Ginger Dressing
-(6, 32, 1.50),  -- Tempura Batter
-(6, 29, 0.30),  -- Scallions
+-- -- Gourmet Spice Co. (SupplierID = 6)
+-- (6, 26, 0.75),  -- Miso Paste
+-- (6, 15, 1.50),  -- Soy Ginger Dressing
+-- (6, 32, 1.50),  -- Tempura Batter
+-- (6, 29, 0.30),  -- Scallions
 
--- Sea Harvest (SupplierID = 7)
-(7, 8, 4.00),   -- Crispy Salmon Skin
-(7, 11, 1.25),  -- Ponzu Sauce
-(7, 12, 8.00),  -- Albacore Tuna
+-- -- Sea Harvest (SupplierID = 7)
+-- (7, 8, 4.00),   -- Crispy Salmon Skin
+-- (7, 11, 1.25),  -- Ponzu Sauce
+-- (7, 12, 8.00),  -- Albacore Tuna
 
--- Vegetable Growers Inc. (SupplierID = 8)
-(8, 4, 1.50),   -- Carrots
-(8, 36, 1.50),  -- Mushrooms
-(8, 35, 0.20),  -- Gyoza Wrappers
-(8, 22, 0.75);  -- Cabbage
+-- -- Vegetable Growers Inc. (SupplierID = 8)
+-- (8, 4, 1.50),   -- Carrots
+-- (8, 36, 1.50),  -- Mushrooms
+-- (8, 35, 0.20),  -- Gyoza Wrappers
+-- (8, 22, 0.75);  -- Cabbage
 
 
 -- RESERVATIONS DATA 
